@@ -112,19 +112,3 @@ All datasets are publicly available and free to use for research.
 | Inflammatory Myositis | Rare, visually diagnosable, limited literature |
 | Antiphospholipid Syndrome | Often missed until a serious clotting event occurs |
 
----
-
-## What You'll Learn Working on This
-
-- Training CNNs on real medical image data with PyTorch
-- Using HuggingFace Transformers for biomedical NLP
-- Building and querying knowledge graphs with NetworkX
-- Working with real public health APIs (PubMed, Orphanet, OMIM)
-- Understanding how RAG pipelines and LLM agents work end-to-end
-- Deploying open-source LLMs with vLLM
-
----
-
-## Project Status
-
-🚧 **Active Development** — currently recruiting team members via [AISC San Diego](https://aiscsandiego.netlify.app/)
