@@ -6,9 +6,9 @@
 
 ## Overview
 
-Patients with rare autoimmune diseases like Lupus, Sjögren's Syndrome, and Mixed Connective Tissue Disease (MCTD) wait an average of **6+ years** for a correct diagnosis — often misdiagnosed with anxiety, depression, fibromyalgia, or more common conditions. During this diagnostic odyssey, critical signals exist scattered across thousands of medical papers, case reports, and clinical figures — but no system connects them.
+Patients with rare autoimmune diseases like Lupus, Sjögren's Syndrome, and Mixed Connective Tissue Disease (MCTD) wait an average of **6+ years** for a correct diagnosis often misdiagnosed with anxiety, depression, fibromyalgia, or more common conditions. During this diagnostic odyssey, critical signals exist scattered across thousands of medical papers, case reports, and clinical figures but no system connects them.
 
-**MediRare** is a multimodal AI research system that bridges this gap. It mines **medical literature figures** using computer vision, extracts **misdiagnosis patterns** from PubMed case reports using NLP, and connects signals across diseases using an **LLM reasoning agent** — generating research-ready reports that surface what clinicians and researchers are currently missing.
+**MediRare** is a multimodal AI research system that bridges this gap. It mines **medical literature figures** using computer vision, extracts **misdiagnosis patterns** from PubMed case reports using NLP, and connects signals across diseases using an **LLM reasoning agent** generating research-ready reports that surface what clinicians and researchers are currently missing.
 
 The goal is to accelerate the path to correct diagnosis for the 300+ million people worldwide living with rare diseases.
 
@@ -36,7 +36,7 @@ A CNN-based pipeline that downloads open-access rare autoimmune disease papers f
 - Output: Classified figure database with disease tags
 
 ### 2. Misdiagnosis Pattern Analyzer (NLP)
-An NLP pipeline that mines thousands of PubMed case reports for rare autoimmune diseases, identifying the sequence of diagnoses a patient received before the correct one. This builds a structured misdiagnosis graph — mapping which diseases get confused with which, and why.
+An NLP pipeline that mines thousands of PubMed case reports for rare autoimmune diseases, identifying the sequence of diagnoses a patient received before the correct one. This builds a structured misdiagnosis graph mapping which diseases get confused with which, and why.
 
 - Model: HuggingFace Transformers (BioBERT / PubMedBERT)
 - Input: PubMed case report abstracts + full texts
@@ -112,3 +112,19 @@ All datasets are publicly available and free to use for research.
 | Inflammatory Myositis | Rare, visually diagnosable, limited literature |
 | Antiphospholipid Syndrome | Often missed until a serious clotting event occurs |
 
+---
+
+## What You'll Learn Working on This
+
+- Training CNNs on real medical image data with PyTorch
+- Using HuggingFace Transformers for biomedical NLP
+- Building and querying knowledge graphs with NetworkX
+- Working with real public health APIs (PubMed, Orphanet, OMIM)
+- Understanding how RAG pipelines and LLM agents work end-to-end
+- Deploying open-source LLMs with vLLM
+
+---
+
+## Project Status
+
+🚧 **Active Development** — currently recruiting team members via [AISC San Diego](https://aiscsandiego.netlify.app/)
