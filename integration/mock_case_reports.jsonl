@@ -1,0 +1,6 @@
+{"pubmed_id":"11111111","disease":"SLE","title":"Fake case report title","abstract":"Fake abstract text","misdiagnosis_sequence":["anxiety"],"extracted_at":"2026-05-06T00:00:00Z"}
+{"pubmed_id":"22222222","disease":"Sjogrens","title":"Fake case report title","abstract":"Fake abstract text","misdiagnosis_sequence":[],"extracted_at":"2026-05-06T00:00:00Z"}
+{"pubmed_id":"33333333","disease":"MCTD","title":"Fake case report title","abstract":"Fake abstract text","misdiagnosis_sequence":["fibromyalgia"],"extracted_at":"2026-05-06T00:00:00Z"}
+{"pubmed_id":"44444444","disease":"SLE","title":"Fake case report title","abstract":"Fake abstract text","misdiagnosis_sequence":[],"extracted_at":"2026-05-06T00:00:00Z"}
+{"pubmed_id":"55555555","disease":"Sjogrens","title":"Fake case report title","abstract":"Fake abstract text","misdiagnosis_sequence":["depression"],"extracted_at":"2026-05-06T00:00:00Z"}
+

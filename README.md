@@ -128,3 +128,16 @@ All datasets are publicly available and free to use for research.
 ## Project Status
 
 🚧 **Active Development** — currently recruiting team members via [AISC San Diego](https://aiscsandiego.netlify.app/)
+
+---
+
+# Week 1 (New Undergrads) - Start Here
+
+Go to: `docs/week1/README.md`
+
+Week 1 branch names (work only on your branch, never on `main`):
+- `week1/nlp`
+- `week1/biomedical`
+- `week1/cv`
+- `week1/backend`
+- `week1/integration`
