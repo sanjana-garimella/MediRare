@@ -1,8 +1,27 @@
 # Week 1 Guide: Biomedical (Label Guide + Annotations + HPO Mapping)
 
-Student level: early undergrad. No coding is required for Week 1.
-
 Time budget: 5-7 hours.
+
+## Minimum success target
+
+You are done for Week 1 biomedical if:
+- You are on `week1/biomedical` (not `main`).
+- `annotations.csv` has 10 real PubMed-based rows.
+- `hpo_mapping.csv` has 15-30 rows with valid `HP:...` IDs.
+- You committed and pushed branch changes.
+
+## What you will learn
+
+- How structured annotation supports biomedical research.
+- Why standardized terms like HPO IDs improve data quality.
+- How clear labels help downstream ML and analysis.
+
+## What you will do this week
+
+- Create a branch for biomedical annotation.
+- Fill in the annotation template with 10 case reports.
+- Map symptoms to HPO codes.
+- Keep the shared files clean and consistent.
 
 ## Phase 1: Setup (Git)
 
@@ -13,7 +32,8 @@ Get the repo and work only on the correct branch.
 ```bash
 git clone https://github.com/sanjana-garimella/MediRare
 cd MediRare
-git checkout -b week1/biomedical
+git fetch --all
+git switch week1/biomedical
 ```
 
 ### Common mistakes
@@ -93,3 +113,8 @@ git push -u origin week1/biomedical
 - `data/biomedical/hpo_mapping.csv` has 15-30 rows with valid `HP:...` IDs
 - You committed and pushed your branch
 
+## Troubleshooting quick fixes
+
+- Cannot find HPO term: use a close clinical phrase first, then refine.
+- Unsure if it is misdiagnosis vs differential: only include diagnoses that clearly happened before final diagnosis.
+- Branch issue: run `git branch --show-current` and confirm `week1/biomedical`.

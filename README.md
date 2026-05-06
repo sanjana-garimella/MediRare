@@ -131,11 +131,11 @@ All datasets are publicly available and free to use for research.
 
 ---
 
-# Week 1 (New Undergrads) - Start Here
+# Week 1 - Start Here
 
 Go to: `docs/week1/README.md`
 
-Week 1 branch names (work only on your branch, never on `main`):
+Start with the Week 1 guide, then work on one of the following branches:
 - `week1/nlp`
 - `week1/biomedical`
 - `week1/cv`

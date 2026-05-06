@@ -1,8 +1,27 @@
 # Week 1 Guide: NLP (PubMed Case Reports -> JSONL)
 
-Student level: early undergrad. You do NOT need deep NLP to finish Week 1.
-
 Time budget: 5-7 hours.
+
+## Minimum success target
+
+You are done for Week 1 NLP if:
+- You are on `week1/nlp` (not `main`).
+- `data/nlp/raw/` contains a downloaded XML file.
+- `data/nlp/processed/sle_case_reports.jsonl` exists with valid JSONL lines.
+- You committed and pushed branch changes (without generated data files).
+
+## What you will learn
+
+- Why raw data and processed data need to be saved separately.
+- How structured datasets help NLP tasks and analysis.
+- What makes a case report dataset useful for future modeling.
+
+## What you will do this week
+
+- Create a branch and a Python environment.
+- Fetch PubMed case reports.
+- Save raw XML and create a JSONL dataset.
+- Validate the output.
 
 ## Phase 1: Setup (Git + Python)
 
@@ -10,11 +29,12 @@ Time budget: 5-7 hours.
 Get the repo, create the correct branch, and set up Python so installs work.
 
 ### Steps
-- Clone and create your Week 1 branch:
+- Clone the repo and switch to the Week 1 NLP branch:
 ```bash
 git clone https://github.com/sanjana-garimella/MediRare
 cd MediRare
-git checkout -b week1/nlp
+git fetch --all
+git switch week1/nlp
 ```
 
 - Create + activate a virtual environment:
@@ -30,6 +50,8 @@ python -m pip install --upgrade pip
 pip install requests lxml pandas
 ```
 
+If `python` fails, try `python3` for all commands.
+
 ### Common mistakes
 - Forgetting to activate `.venv` before running `pip install`.
 - Working on `main` by accident. Run `git branch --show-current` to confirm you are on `week1/nlp`.
@@ -42,6 +64,7 @@ Make a place to store raw downloads and a clean dataset file the rest of the tea
 ### Steps
 ```bash
 mkdir -p data/nlp/raw data/nlp/processed
+ls -la data/nlp
 ```
 
 ### What you should see
@@ -102,8 +125,9 @@ Push your work so the team can review it.
 ### Steps
 ```bash
 git status
-git add nlp/ data/nlp/
-git commit -m \"week1(nlp): add PubMed fetcher + SLE JSONL dataset\"
+# Do NOT commit downloaded data files (raw XML / processed outputs). Only commit code + docs.
+git add nlp/ docs/week1/
+git commit -m "week1(nlp): add/adjust PubMed fetcher and notes"
 git push -u origin week1/nlp
 ```
 
@@ -118,3 +142,10 @@ git push -u origin week1/nlp
 - Raw XML was saved under `data/nlp/raw/`
 - You committed and pushed your branch
 
+Note: The data files are generated locally and are not committed to GitHub.
+
+## Troubleshooting quick fixes
+
+- Empty or tiny output: increase `--retmax` and retry.
+- JSONL format issue: each line must be one JSON object (no outer list).
+- Branch issue: run `git branch --show-current` and confirm `week1/nlp`.
