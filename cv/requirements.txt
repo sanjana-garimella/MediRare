@@ -1,0 +1,4 @@
+pymupdf>=1.23
+pillow
+pandas
+transformers

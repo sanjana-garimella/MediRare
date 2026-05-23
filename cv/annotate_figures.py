@@ -53,7 +53,7 @@ def save_rows(meta_path: Path, rows: list[dict]) -> None:
 
 
 def is_annotated(row: dict) -> bool:
-    return row.get("figure_type", "other") != "other"
+    return row.get("figure_type", "unlabeled") != "unlabeled"
 
 
 def prompt_figure_type() -> str | None:

@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -102,7 +103,7 @@ def extract_images(pdf_path: Path, out_dir: Path) -> list[dict]:
                 "pubmed_id": pubmed_id,
                 "disease": PMID_DISEASE.get(pubmed_id, ""),
                 "figure_index": idx,
-                "figure_type": "other",
+                "figure_type": "unlabeled",
                 "file_path": str(out_path.as_posix()),
                 "caption": caption,
                 "clinical_relevance": "unknown",
@@ -119,6 +120,7 @@ def main() -> int:
     ap.add_argument("--pdf_dir", type=str, required=True)
     ap.add_argument("--out_dir", type=str, required=True)
     ap.add_argument("--meta_out", type=str, required=True)
+    ap.add_argument("--jsonl_out", type=str, default=None, help="Optional path to also write a JSONL file")
     args = ap.parse_args()
 
     pdf_dir = Path(args.pdf_dir)
@@ -136,6 +138,16 @@ def main() -> int:
         writer = csv.DictWriter(f, fieldnames=FIELDS)
         writer.writeheader()
         writer.writerows(all_rows)
+
+    if args.jsonl_out:
+        jsonl_out = Path(args.jsonl_out)
+        jsonl_out.parent.mkdir(parents=True, exist_ok=True)
+        with jsonl_out.open("w", encoding="utf-8") as f:
+            for row in all_rows:
+                row_copy = dict(row)
+                row_copy["figure_index"] = int(row_copy["figure_index"])
+                f.write(json.dumps(row_copy) + "\n")
+        print(f"Metadata JSONL : {jsonl_out} ({len(all_rows)} rows)")
 
     print(f"\nProcessed PDFs : {len(list(pdf_dir.glob('*.pdf')))}")
     print(f"Figures written: {out_dir}")
