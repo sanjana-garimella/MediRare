@@ -11,6 +11,5 @@ data/nlp/raw/
 data/nlp/processed/
 data/cv/pdfs/
 data/cv/figures/
-data/cv/metadata/
 integration/merged_records.jsonl
 
