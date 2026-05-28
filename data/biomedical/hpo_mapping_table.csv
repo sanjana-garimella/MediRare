@@ -1,0 +1,31 @@
+disease,hpo_id,hpo_term,phenotype_category,clinical_relevance,notes
+SLE,HP:0002725,Systemic lupus erythematosus,Disease root,High,Root HPO node for SLE
+SLE,HP:0004406,Malar rash,Mucocutaneous,High,Butterfly rash; highly specific to SLE
+SLE,HP:0000992,Photosensitivity,Mucocutaneous,High,Skin reaction to UV; ACR criterion
+SLE,HP:0000099,Glomerulonephritis,Renal,High,Lupus nephritis; primary renal manifestation
+SLE,HP:0001873,Thrombocytopenia,Hematologic,High,"Platelets < 100,000 in active SLE"
+SLE,HP:0001903,Anemia,Hematologic,Medium,Hemolytic anemia; Coombs-positive in SLE
+SLE,HP:0000979,Purpura,Mucocutaneous,Medium,Vasculitic purpura in SLE
+SLE,HP:0000822,Hypertension,Renal/Cardiovascular,Medium,Secondary to lupus nephritis
+SLE,HP:0003613,Antiphospholipid antibodies,Immunologic,High,"Associated with APS, thrombosis, pregnancy morbidity"
+SLE,HP:0002829,Arthralgia,Musculoskeletal,Medium,Non-erosive joint pain; ACR criterion
+Sjogrens,HP:0000670,Carious teeth,Oral,Medium,Dental caries from xerostomia
+Sjogrens,HP:0000221,Xerostomia,Glandular,High,Dry mouth; core diagnostic feature
+Sjogrens,HP:0000613,Photophobia,Ocular,Medium,From keratoconjunctivitis sicca (dry eye)
+Sjogrens,HP:0012735,Cough,Pulmonary,Low,Tracheal dryness or ILD-associated cough
+Sjogrens,HP:0001324,Muscle weakness,Musculoskeletal,Low,Fatigue-related; myopathy in extraglandular Sjögren's
+Sjogrens,HP:0002153,Hyperkalemia,Renal,Medium,From type I renal tubular acidosis (distal RTA)
+Sjogrens,HP:0003259,Elevated serum creatinine,Renal,Medium,Tubular rather than glomerular nephropathy
+Sjogrens,HP:0001939,Abnormality of metabolism/homeostasis,Systemic,Low,Broad metabolic derangement from RTA
+Sjogrens,HP:0001945,Fever,Constitutional,Low,Low-grade fever in active Sjögren's
+Sjogrens,HP:0002633,Vasculitis,Vascular,Medium,Hypersensitivity vasculitis; associated with lymphoma risk
+MCTD,HP:0002633,Vasculitis,Vascular,Medium,Vascular inflammation in overlap syndrome
+MCTD,HP:0000978,Bruising susceptibility,Hematologic,Low,Thrombocytopenia-associated bleeding
+MCTD,HP:0002093,Respiratory insufficiency,Pulmonary,High,From ILD and PAH — leading cause of MCTD mortality
+MCTD,HP:0000822,Hypertension,Cardiovascular,High,Pulmonary arterial hypertension; most severe complication
+MCTD,HP:0001324,Muscle weakness,Musculoskeletal,High,Proximal myopathy from polymyositis component
+MCTD,HP:0002829,Arthralgia,Musculoskeletal,High,Symmetric inflammatory arthritis; prominent in MCTD
+MCTD,HP:0000978,Bruising susceptibility,Hematologic,Low,Duplicate placeholder — see vasculitis entry
+MCTD,HP:0001903,Anemia,Hematologic,Medium,Mild normocytic anemia common in MCTD
+MCTD,HP:0000967,Petechiae,Mucocutaneous,Low,Rare; from thrombocytopenia
+MCTD,HP:0004386,Gastrointestinal inflammation,Gastrointestinal,Medium,Esophageal dysmotility; reflux from SSc overlap
