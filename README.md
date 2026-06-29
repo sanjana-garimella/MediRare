@@ -14,14 +14,26 @@ MediRare builds that connection.
 
 ## Reproducing the analysis
 
-The repository is **self-contained**: all data behind the 150-case analysis is
-committed (not referenced externally). A fresh clone can regenerate everything:
+The repository is **self-contained**: all data behind the analysis is committed
+(not referenced externally).
+
+**To work with the exact data we ran on — just clone.** The committed files under
+`data/nlp/processed/`, `data/cv/figure_metadata.jsonl`, and
+`data/biomedical/` *are* the exact inputs; no fetch needed:
 
 ```bash
 git clone <repo> && cd MediRare
 pip install -r requirements.txt
-bash scripts/reproduce.sh          # fetch → validate → extract → CV → health check
+python3 nlp/eval_extractor.py \
+    --pred data/nlp/processed/sle_case_reports.jsonl \
+    --truth data/biomedical/sle_misdiagnosis_groundtruth.csv   # reproduces the confusion matrix
 ```
+
+**To regenerate from PubMed** (optional), run `bash scripts/reproduce.sh`.
+⚠️ This re-fetches live from PubMed and will **not** return byte-identical
+records — new case reports get published and relevance ranking shifts over time,
+so PMIDs drift. The ground-truth CSV is keyed to the committed PMIDs; re-label it
+after any re-fetch. For exact reproduction, use the committed files, not a fresh fetch.
 
 `scripts/reproduce.sh` runs the full pipeline (NLP **and** CV) end-to-end:
 
