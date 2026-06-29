@@ -8,7 +8,6 @@ __pycache__/
 
 # Generated data outputs (Week 1 scripts create these locally)
 data/nlp/raw/
-data/nlp/processed/
 data/cv/pdfs/
 data/cv/figures/
 integration/merged_records.jsonl
