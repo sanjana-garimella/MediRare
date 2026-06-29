@@ -28,21 +28,31 @@ python3 -m schemas.validate_jsonl data/nlp/processed/mctd_case_reports.jsonl    
 
 # ── 3. Run misdiagnosis extractor (SLE only — first pass) ────────────────────
 echo ""
-echo "[3/4] Running misdiagnosis extractor on SLE records ..."
+echo "[3/5] Running misdiagnosis extractor on SLE records ..."
 python3 nlp/extract_misdiagnosis.py data/nlp/processed/sle_case_reports.jsonl
 python3 -m schemas.validate_jsonl data/nlp/processed/sle_case_reports.jsonl CaseReport
 
-# ── 4. Pipeline health check ─────────────────────────────────────────────────
+# ── 4. Fetch CV figure metadata from PMC open-access articles ────────────────
 echo ""
-echo "[4/4] Running pipeline health checks ..."
+echo "[4/5] Fetching clinical figure metadata from PMC open-access articles ..."
+python3 cv/fetch_pmc_figures.py \
+    --jsonl data/nlp/processed/sle_case_reports.jsonl \
+            data/nlp/processed/sjogrens_case_reports.jsonl \
+            data/nlp/processed/mctd_case_reports.jsonl \
+    --out data/cv/figure_metadata.jsonl
+
+# ── 5. Pipeline health check ─────────────────────────────────────────────────
+echo ""
+echo "[5/5] Running pipeline health checks ..."
 python3 scripts/week1_check.py --role nlp
 python3 scripts/week1_check.py --role biomedical
 
 echo ""
 echo "=== Done. ==="
-echo "  NLP: data/nlp/processed/  (3 JSONL files, 50 records each)"
-echo "  CV:  data/cv/figure_metadata.jsonl  (17 figures, 8 open-access articles)"
+echo "  NLP: data/nlp/processed/        (3 JSONL files, 50 records each)"
+echo "  CV:  data/cv/figure_metadata.jsonl  (figure metadata from PMC open-access)"
 echo "  Gold: data/biomedical/annotated_cases.csv  (10 hand-crafted cases — DO NOT OVERWRITE)"
 echo ""
 echo "NOTE: misdiagnosis_sequence is populated for 1/50 SLE records via keyword pass."
 echo "      Full extraction requires NLP (PubMedBERT) on PMC full text — see roadmap."
+echo "      To scale the corpus: re-run step 1 with --retmax 200 (NCBI cap per run)."

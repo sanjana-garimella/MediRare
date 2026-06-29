@@ -12,37 +12,76 @@ MediRare builds that connection.
 
 ---
 
+## Reproducing the analysis
+
+The repository is **self-contained**: all data behind the 150-case analysis is
+committed (not referenced externally). A fresh clone can regenerate everything:
+
+```bash
+git clone <repo> && cd MediRare
+pip install -r requirements.txt
+bash scripts/reproduce.sh          # fetch → validate → extract → CV → health check
+```
+
+`scripts/reproduce.sh` runs the full pipeline (NLP **and** CV) end-to-end:
+
+| Step | Command | Output |
+|---|---|---|
+| 1. Fetch case reports | `python3 nlp/fetch_pubmed_case_reports.py --disease SLE --retmax 50` | `data/nlp/processed/*.jsonl` |
+| 2. Validate | `python3 -m schemas.validate_jsonl <file> CaseReport` | pass/fail |
+| 3. Extract misdiagnoses | `python3 nlp/extract_misdiagnosis.py data/nlp/processed/sle_case_reports.jsonl` | populates `misdiagnosis_sequence` |
+| 4. Fetch CV figures | `python3 cv/fetch_pmc_figures.py --jsonl <files> --out data/cv/figure_metadata.jsonl` | `data/cv/figure_metadata.jsonl` |
+| 5. Health check | `python3 scripts/week1_check.py --role nlp` | summary |
+
+**Scaling the corpus:** PubMed holds ~3,000 SLE case reports (1,471 in the last
+5 years). The committed 50/disease is a **development sample** — enough to build
+and eyeball the extractor against the 10 gold cases, but *not* the final research
+corpus. The misdiagnosis graph will need 200–500+ records per disease. To scale,
+re-run step 1 with `--retmax 200` (the NCBI per-run cap; batch for more).
+
+---
+
 ## Current Data (as of June 2026)
 
 ### NLP — Case Reports
 
-| Disease | PubMed Records | With Abstract | Misdiagnosis Signal |
+| Disease | PubMed Records | With Abstract | Misdiagnosis Extracted |
 |---|---|---|---|
-| Systemic Lupus Erythematosus (SLE) | 50 | 48 | 5 records |
-| Sjögren's Syndrome | 50 | 47 | 0 records* |
-| Mixed Connective Tissue Disease (MCTD) | 50 | 48 | 3 records |
-| **Total** | **150** | **143** | **8** |
+| Systemic Lupus Erythematosus (SLE) | 50 | 48 | 1 (keyword pass) |
+| Sjögren's Syndrome | 50 | 47 | not run yet |
+| Mixed Connective Tissue Disease (MCTD) | 50 | 48 | not run yet |
+| **Total** | **150** | **143** | **1** |
 
-*Sjögren's search query needs tightening — 13/50 records are noise from overlapping conditions.
+> **50 is a dev sample, not the target corpus** (see *Scaling the corpus* above).
 
-**Sample misdiagnosis signals found:**
-- `[42321940]` Leprosy masquerading as SLE — `misdiagnosed`, `previously diagnosed`
-- `[42325589]` Lupus Enteritis with diagnostic delay — `prior diagnosis`, `diagnostic delay`
-- `[39415142]` Central retinal artery occlusion as initial MCTD manifestation — `misdiagnosed`
-- `[40190945]` Macrophage Activation Syndrome in MCTD — `prior diagnosis`
+**Extractor results (SLE, keyword/regex first pass — `nlp/extract_misdiagnosis.py`):**
+- **1/50** populated with high confidence: `[42160240]` jSLE → `["pyrexia of unknown origin"]`
+- **4/50** flagged `KEYWORD_NO_ENTITY` — keyword present but entity needs NLP/LLM
+- **43/50** no keyword signal — *the real gap*: misdiagnosis lives in the full case
+  narrative (PMC full text), not the abstract. Keyword matching tops out near 2%
+  on abstracts; PubMedBERT on full text is the next step.
+
+> The populated `misdiagnosis_sequence` values in `docs/analysis_150_cases.md` and
+> the 10 gold `SYN_*` cases are **synthetic placeholders** for schema design — not
+> extracted from real text. Real extraction is the active work.
 
 ### CV — Clinical Figures
 
-From the 150 case reports, **8 are open-access via PubMed Central**, yielding **17 extractable figures**:
+Regenerated reproducibly from all 150 records via `cv/fetch_pmc_figures.py`
+(PubMed → PMC open-access → figure XML). **103 of 150 are open-access**, yielding
+**296 figures** with captions and type labels:
 
-| Disease | Open-Access Articles | Figures | Types |
+| Disease | Open-Access Articles | Figures | Type breakdown |
 |---|---|---|---|
-| SLE | 3 | 7 | rash_image (1), imaging (0), other (6) |
-| Sjögren's | 2 | 4 | imaging (4) |
-| MCTD | 3 | 6 | imaging (2), lab_chart (3), histology (1) |
-| **Total** | **8** | **17** | 4 types identified |
+| SLE | 30 | 87 | imaging 23, histology 11, rash 8, lab_chart 6, other 39 |
+| Sjögren's | 40 | 106 | imaging 31, histology 16, lab_chart 11, rash 4, other 44 |
+| MCTD | 33 | 103 | imaging 28, lab_chart 8, rash 7, histology 4, other 56 |
+| **Total** | **103** | **296** | imaging 82, other 139, histology 31, lab_chart 25, rash 19 |
 
-Figure type classification (rash image, histology, lab chart, imaging) is being done via caption keyword matching as a first pass, before any model-based classification.
+Figure type is assigned by caption keyword matching (imaging / histology /
+lab_chart / rash_image) as a first pass, before any model-based classification.
+The script captures figure metadata (caption, label, image filename); downloading
+the image binaries requires the PMC OA bulk service (see roadmap).
 
 ### Biomedical Annotations
 
