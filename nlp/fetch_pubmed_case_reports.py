@@ -29,10 +29,24 @@ EUTILS_BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
 
 
 DISEASE_TERMS = {
-    # Keep Week 1 simple. We can tune queries later.
+    # General corpus: every case report for the disease.
     "SLE": '"systemic lupus erythematosus" AND "case report"',
     "Sjogrens": '"Sjogren syndrome" AND "case report"',
     "MCTD": '"mixed connective tissue disease" AND "case report"',
+}
+
+# Misdiagnosis-focused corpus: same diseases, but restricted to case reports
+# whose title/abstract signals a diagnostic error or mimic. The generic query
+# buries misdiagnosis cases (~4 per 50); this query surfaces them (~500+ for SLE).
+# The misdiagnosis trigger block is shared across diseases.
+_MISDX_TRIGGERS = (
+    '(misdiagnos*[tiab] OR "initially diagnosed"[tiab] OR mimicking[tiab] '
+    'OR masquerading[tiab] OR "delayed diagnosis"[tiab] OR "initially treated"[tiab])'
+)
+MISDIAGNOSIS_TERMS = {
+    "SLE": f'"systemic lupus erythematosus"[tiab] AND {_MISDX_TRIGGERS} AND "case reports"[ptyp]',
+    "Sjogrens": f'"primary Sjogren\'s syndrome"[tiab] AND {_MISDX_TRIGGERS} AND "case reports"[ptyp]',
+    "MCTD": f'"mixed connective tissue disease"[tiab] AND {_MISDX_TRIGGERS} AND "case reports"[ptyp]',
 }
 
 
@@ -123,10 +137,20 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--disease", choices=sorted(DISEASE_TERMS.keys()), default="SLE")
     ap.add_argument("--retmax", type=int, default=30)
+    ap.add_argument(
+        "--focus",
+        choices=["general", "misdiagnosis"],
+        default="misdiagnosis",
+        help="general = all case reports; misdiagnosis = only diagnostic-error/mimic cases (default)",
+    )
     ap.add_argument("--sleep_s", type=float, default=0.34, help="Be polite to NCBI.")
     args = ap.parse_args()
 
-    term = DISEASE_TERMS[args.disease]
+    if args.retmax > 200:
+        ap.error("retmax must be <= 200 (NCBI rate-limit policy; batch for more)")
+
+    term = (MISDIAGNOSIS_TERMS if args.focus == "misdiagnosis" else DISEASE_TERMS)[args.disease]
+    print(f"Query [{args.focus}]: {term}")
 
     Path("data/nlp/raw").mkdir(parents=True, exist_ok=True)
     Path("data/nlp/processed").mkdir(parents=True, exist_ok=True)

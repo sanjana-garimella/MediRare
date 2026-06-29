@@ -81,6 +81,9 @@ def main() -> int:
     recall = tp / (tp + fn) if (tp + fn) else 0.0
     f1 = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
     accuracy = (tp + tn) / total if total else 0.0
+    n_pos = tp + fn
+    n_neg = fp + tn
+    baseline = max(n_pos, n_neg) / total if total else 0.0  # always-predict-majority
 
     print(f"\n{'='*56}")
     print(f"Extractor evaluation  (n={total} records)")
@@ -91,10 +94,11 @@ def main() -> int:
     print(f"  predicted YES   |     {tp:>4}        {fp:>4}     | (TP / FP)")
     print(f"  predicted NO    |     {fn:>4}        {tn:>4}     | (FN / TN)")
     print()
+    print(f"  Class balance : {n_pos} positive / {n_neg} negative")
     print(f"  Precision : {precision:.2f}   (of flagged records, fraction correct)")
     print(f"  Recall    : {recall:.2f}   (of real misdiagnoses, fraction caught)")
     print(f"  F1        : {f1:.2f}")
-    print(f"  Accuracy  : {accuracy:.2f}   (inflated by class imbalance — most records are negative)")
+    print(f"  Accuracy  : {accuracy:.2f}   (vs {baseline:.2f} majority-class baseline)")
     print()
     if fn_ids:
         print(f"  False negatives (missed real misdiagnoses): {', '.join(fn_ids)}")

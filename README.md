@@ -27,17 +27,18 @@ bash scripts/reproduce.sh          # fetch → validate → extract → CV → h
 
 | Step | Command | Output |
 |---|---|---|
-| 1. Fetch case reports | `python3 nlp/fetch_pubmed_case_reports.py --disease SLE --retmax 50` | `data/nlp/processed/*.jsonl` |
+| 1. Fetch case reports | `python3 nlp/fetch_pubmed_case_reports.py --disease SLE --retmax 100 --focus misdiagnosis` | `data/nlp/processed/*.jsonl` |
 | 2. Validate | `python3 -m schemas.validate_jsonl <file> CaseReport` | pass/fail |
 | 3. Extract misdiagnoses | `python3 nlp/extract_misdiagnosis.py data/nlp/processed/sle_case_reports.jsonl` | populates `misdiagnosis_sequence` |
-| 4. Fetch CV figures | `python3 cv/fetch_pmc_figures.py --jsonl <files> --out data/cv/figure_metadata.jsonl` | `data/cv/figure_metadata.jsonl` |
-| 5. Health check | `python3 scripts/week1_check.py --role nlp` | summary |
+| 4. Evaluate | `python3 nlp/eval_extractor.py --pred <file> --truth data/biomedical/sle_misdiagnosis_groundtruth.csv` | confusion matrix |
+| 5. Fetch CV figures | `python3 cv/fetch_pmc_figures.py --jsonl <files> --out data/cv/figure_metadata.jsonl` | `data/cv/figure_metadata.jsonl` |
+| 6. Health check | `python3 scripts/week1_check.py --role nlp` | summary |
 
-**Scaling the corpus:** PubMed holds ~3,000 SLE case reports (1,471 in the last
-5 years). The committed 50/disease is a **development sample** — enough to build
-and eyeball the extractor against the 10 gold cases, but *not* the final research
-corpus. The misdiagnosis graph will need 200–500+ records per disease. To scale,
-re-run step 1 with `--retmax 200` (the NCBI per-run cap; batch for more).
+**Query focus matters more than size.** The generic `--focus general` query
+("SLE case report") buries misdiagnosis cases — only ~8% of records contain one.
+The `--focus misdiagnosis` query (default) targets diagnostic-error / mimic case
+reports and raises that to ~63%. PubMed holds ~560 misdiagnosis-relevant SLE
+case reports; scale with `--retmax 200` (NCBI per-run cap; batch for more).
 
 ---
 
@@ -45,25 +46,32 @@ re-run step 1 with `--retmax 200` (the NCBI per-run cap; batch for more).
 
 ### NLP — Case Reports
 
-| Disease | PubMed Records | With Abstract | Misdiagnosis Extracted |
-|---|---|---|---|
-| Systemic Lupus Erythematosus (SLE) | 50 | 48 | 1 (keyword pass) |
-| Sjögren's Syndrome | 50 | 47 | not run yet |
-| Mixed Connective Tissue Disease (MCTD) | 50 | 48 | not run yet |
-| **Total** | **150** | **143** | **1** |
+| Disease | Query focus | Records | Misdiagnosis cases | Extracted |
+|---|---|---|---|---|
+| Systemic Lupus Erythematosus (SLE) | misdiagnosis | 100 | 63 (labeled) | 14 |
+| Sjögren's Syndrome | general | 50 | not labeled | not run |
+| Mixed Connective Tissue Disease (MCTD) | general | 50 | not labeled | not run |
 
-> **50 is a dev sample, not the target corpus** (see *Scaling the corpus* above).
+**SLE extractor evaluation** (keyword/regex first pass vs. 100 hand labels,
+`nlp/eval_extractor.py`):
 
-**Extractor results (SLE, keyword/regex first pass — `nlp/extract_misdiagnosis.py`):**
-- **1/50** populated with high confidence: `[42160240]` jSLE → `["pyrexia of unknown origin"]`
-- **4/50** flagged `KEYWORD_NO_ENTITY` — keyword present but entity needs NLP/LLM
-- **43/50** no keyword signal — *the real gap*: misdiagnosis lives in the full case
-  narrative (PMC full text), not the abstract. Keyword matching tops out near 2%
-  on abstracts; PubMedBERT on full text is the next step.
+| Metric | Value | Reading |
+|---|---|---|
+| Precision | 0.88 | of 16 flagged, 14 correct |
+| Recall | 0.22 | catches 14 of 63 real cases |
+| F1 | 0.35 | |
+| Accuracy | 0.49 | vs 0.63 majority baseline |
 
-> The populated `misdiagnosis_sequence` values in `docs/analysis_150_cases.md` and
-> the 10 gold `SYN_*` cases are **synthetic placeholders** for schema design — not
-> extracted from real text. Real extraction is the active work.
+- Switching to the misdiagnosis query took the corpus from **4 → 63 real cases**
+  and extractions from **1 → 14**.
+- Recall is still low — keyword/regex misses 49 of 63. Full-text PubMedBERT next.
+- 2 false positives (`Evans syndrome`, `retinal vasculitis`) are SLE
+  *manifestations* named via "initially diagnosed with…", not competing diseases —
+  a definitional gray zone flagged for clinician review.
+
+> Ground-truth labels in `data/biomedical/sle_misdiagnosis_groundtruth.csv` are
+> AI-proposed (`review_status` column) and need clinician sign-off. The `SYN_*`
+> rows in the gold set / analysis doc remain **synthetic placeholders**.
 
 ### CV — Clinical Figures
 

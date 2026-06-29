@@ -1,51 +1,101 @@
 pubmed_id,has_misdiagnosis,true_wrong_diagnosis,rationale,review_status
-42362294,0,,No abstract; title is endometriosis mimicking malignancy (not an SLE misdiagnosis),AI-proposed
-42359320,0,,SLE patient with foreign-body hepatic abscess; no prior wrong diagnosis,AI-proposed
-42344911,0,,NPSLE presenting as ICH; workup led to SLE with no prior wrong dx,AI-proposed
-42333341,0,,McConnell's sign suggests PE but is a differential/sign not an assigned wrong dx,AI-proposed
-42329349,0,,Retiform purpura as unusual SLE presentation; direct workup to SLE,AI-proposed
-42326169,0,,Bullous SLE in already-known SLE patient,AI-proposed
-42325589,0,,Lupus enteritis mimics listed generically; prior dx is SLE itself not a wrong dx,AI-proposed
-42324723,0,,No abstract; title suggests primary APS label but not confirmable from text,AI-proposed
-42321940,1,SLE,Leprosy initially misdiagnosed as SLE (reverse direction: SLE was the wrong label),AI-proposed
-42319627,1,acute appendicitis,Child diagnosed with acute appendicitis at surgery; actually disseminated TB + early-onset SLE,AI-proposed
-42317916,0,,Uterine necrosis in SLE patient; no misdiagnosis,AI-proposed
-42317892,0,,Autopsy coexistence of MPA/SLE/amyloidosis; no misdiagnosis trail,AI-proposed
-42305704,0,,CAPS in newly diagnosed SLE; overlap challenges described generically,AI-proposed
-42292460,0,,Libman-Sacks endocarditis in known SLE/APS,AI-proposed
-42290181,0,,Gingival necrosis in SLE patient,AI-proposed
-42287193,0,,Known 45-yr SLE develops NMOSD; not a misdiagnosis,AI-proposed
-42287064,1,hypothyroidism,B-cell lymphoma mimicking SLE; initially treated for hypothyroidism/hypoproteinemia,AI-proposed
-42266541,0,,Childhood SLE with growth retardation; diagnostic delay but no named wrong dx,AI-proposed
-42265706,0,,Libman-Sacks + malaria in known 4-yr SLE,AI-proposed
-42256376,0,,Prior AS diagnosis is a true coexisting condition not a misdiagnosis,AI-proposed
-42254220,0,,Dermatomyositis-SLE overlap; coexistence,AI-proposed
-42254203,0,,PRES as SLE presentation; no prior wrong dx,AI-proposed
-42254196,0,,Concurrent SLE and AS; coexistence,AI-proposed
-42254151,0,,CMV-HLH revealing SLE; no prior wrong dx,AI-proposed
-42254014,0,,GBS after E. coli meningitis in SLE patient; no misdiagnosis,AI-proposed
-42243916,0,,MAS in pediatric SLE,AI-proposed
-42231426,0,,Aortic surgery in SLE patient with prior STEMI,AI-proposed
-42220782,0,,Organizing pneumonia as initial SLE manifestation; recurrent pneumonia is history not named wrong dx,AI-proposed
-42218403,0,,Suprachoroidal effusion in active SLE,AI-proposed
-42216130,0,,IgA nephropathy association study in SLE,AI-proposed
-42204705,0,,SLE presenting with slurred speech; direct referral to rheumatology,AI-proposed
-42199417,0,,Purtscher-like retinopathy secondary to known 8-yr SLE,AI-proposed
-42183258,0,,Neonatal lupus genetic case,AI-proposed
-42181216,0,,Noonan-like disorder; SLE could not be excluded (differential),AI-proposed
-42176205,0,,Splenic calcifications led to SLE dx; no prior wrong dx,AI-proposed
-42169141,0,,Rhupus (RA+SLE overlap); coexistence,AI-proposed
-42165750,0,,Discoid lupus in genital skin; overlap with dermatoses described generically,AI-proposed
+42371446,0,,Caffeine withdrawal vs migraine in SLE patient; not an SLE-confusion case,AI-proposed
+42367351,1,tuberculosis,SLE pleural effusion attributed to TB in endemic region,AI-proposed
+42315243,0,,Generic mimic boilerplate; SLE not the confused diagnosis,AI-proposed
+42287064,1,hypothyroidism,B-cell lymphoma mimicking SLE; initially treated for hypothyroidism,AI-proposed
+42261517,1,lupus pneumonitis,EBV+ DLBCL masquerading as lupus pneumonitis,AI-proposed
+42251934,1,systemic lupus erythematosus flare,Visceral leishmaniasis masquerading as autoimmune flare,AI-proposed
+42182598,1,infection,HLH first presentation of SLE frequently misdiagnosed as infection,AI-proposed
 42160240,1,pyrexia of unknown origin,jSLE initially diagnosed as pyrexia of unknown origin,AI-proposed
-42159815,0,,Autoimmune retinopathy in TLR7 interferonopathy,AI-proposed
-42158777,0,,PRES as initial SLE presentation; no prior wrong dx,AI-proposed
-42147803,0,,C1q deficiency presenting as early-onset SLE,AI-proposed
-42147651,0,,Kikuchi-Fujimoto disease + SLE; diagnostic challenge but no named wrong dx,AI-proposed
-42144295,0,,Cytokine release syndrome post-ATG in SLE transplant patient,AI-proposed
-42139076,0,,Lymphoproliferative disorder in SLE patient,AI-proposed
-42136647,0,,Acquired FXIII deficiency; ANA-negative delayed dx but no named wrong dx,AI-proposed
-42135975,0,,Nocardiosis in SLE on prophylaxis; sequential infections,AI-proposed
-42131627,0,,MCTD digital gangrene case in known MCTD,AI-proposed
-42131336,0,,Splenectomy for SLE-AIHA,AI-proposed
-42116972,0,,M. fortuitum ulcer; pyoderma gangrenosum/vasculitis were differentials only,AI-proposed
-42112145,0,,IgG4-related disease; pancreatic cancer was a suspicion/differential not assigned dx,AI-proposed
+42117644,0,,Lemierre's vs thoracic outlet syndrome; non-SLE confusion,AI-proposed
+42112145,0,,IgG4 disease; pancreatic cancer was a radiologic suspicion only,AI-proposed
+42112140,1,lupus nephritis,ROSAH syndrome masquerading as lupus nephritis,AI-proposed
+42088489,1,surgical obstruction,SLE intestinal pseudo-obstruction frequently misdiagnosed as surgical obstruction,AI-proposed
+42046588,1,meningitis,Intracranial hypertension mimicking meningitis with empirical treatment,AI-proposed
+42006577,1,Kikuchi-Fujimoto disease,KFD with digestive symptoms progressing to SLE; misdiagnosis-prone,AI-proposed
+42005145,0,,KFD generic resemblance; no SLE confusion in this patient,AI-proposed
+41994815,1,pustular psoriasis,Facial rash initially diagnosed as pustular psoriasis then revised,AI-proposed
+41978600,1,malignancy,Tjalma syndrome with CA-125 mimicking malignancy,AI-proposed
+41939593,1,erythema nodosum,Lupus tumidus initially diagnosed as erythema nodosum,AI-proposed
+41939103,0,,Primary Sjogren's pleuritis; generic pneumonia/COPD mimic,AI-proposed
+41868211,1,aspergillosis,Lung SCC mimicking recurrent aspergillosis,AI-proposed
+41847937,1,lupus flare,CMV infection mimicking SLE manifestation/flare,AI-proposed
+41823091,0,,Spontaneous intracranial hypotension; CTD only a risk factor,AI-proposed
+41814534,0,,SLE with IgA nephropathy; coexistence/overlap,AI-proposed
+41795692,0,,PNGD without underlying systemic disease,AI-proposed
+41783879,1,spinal glioblastoma,SLE myelitis mimicking spinal glioblastoma,AI-proposed
+41742048,0,,Bartonella endocarditis; SLE not the confused diagnosis,AI-proposed
+41731438,1,Japanese spotted fever,SLE mimicking Japanese spotted fever (Rickettsia),AI-proposed
+41695827,1,rosacea,Malar rash overlapping rosacea; oral ulcers initially linked to prosthesis,AI-proposed
+41694957,1,malignant lymphoma,NPSLE brainstem encephalitis mimicking malignant lymphoma,AI-proposed
+41675871,1,tuberculosis,Familial SLE mimicking TB; pleural effusions misattributed,AI-proposed
+41674158,1,lupus enteritis,Intestinal EBV-LPD mimicking lupus enteritis,AI-proposed
+41624895,1,lymphoma,Pediatric KFD progressing to SLE mimicking lymphoma/TB lymphadenitis,AI-proposed
+41589163,1,subacute appendicitis,Severe SLE mimicking HLH; initially diagnosed subacute appendicitis,AI-proposed
+41586411,0,,Cervical SCC in SLE transplant patient; no misdiagnosis,AI-proposed
+41578476,1,rheumatoid factor-positive polyarticular JIA,Juvenile rhupus initially diagnosed as RF+ polyarticular JIA,AI-proposed
+41552135,1,systemic lupus erythematosus flare,Cardiac myxoma mimicking SLE flare with diagnostic delay,AI-proposed
+41524168,1,systemic lupus erythematosus,Salmonellosis glomerulonephritis mimicking SLE,AI-proposed
+41485065,1,lupus flare,Purulent pericardial effusion vs autoimmune flare misattribution,AI-proposed
+41480887,0,,Adrenal failure in APS; not SLE confusion,AI-proposed
+41439060,1,pyrexia of unknown origin,Hepatic haemangioma mimicking abscess; initially treated as PUO,AI-proposed
+41426556,1,systemic lupus erythematosus,Visceral leishmaniasis overlapping/mimicking SLE,AI-proposed
+41409906,0,,KFD differential; no SLE confusion,AI-proposed
+41399085,1,neuropsychiatric systemic lupus erythematosus,CNS infection mimicking NPSLE,AI-proposed
+41386950,0,,HCQ cardiomyopathy vs other cardiomyopathies; drug-toxicity mimic,AI-proposed
+41356082,1,rheumatoid arthritis,MCTD+TB initially diagnosed as rheumatoid arthritis,AI-proposed
+41235255,1,urticaria,Lupus mesenteric vasculitis disguised as urticaria,AI-proposed
+41210444,1,MADSAM,Delayed diagnosis differentiating MADSAM from SLE neuropathy,AI-proposed
+41204247,0,,Juvenile SLE complicated by PRES; complication not misdiagnosis,AI-proposed
+41116005,1,depression,SLE vascular dementia apathy misdiagnosed as depression,AI-proposed
+41096150,1,primary immunodeficiency,Case series of SLE mimickers (immunodeficiencies/interferonopathies),AI-proposed
+41051236,0,,LAHPS in child; no named confused diagnosis,AI-proposed
+41035545,1,neuromyelitis optica spectrum disorder,SLE initially diagnosed as AQP4+ NMOSD,AI-proposed
+40985413,1,subacute cutaneous lupus erythematosus,Tinea incognito mimicking subacute cutaneous LE,AI-proposed
+40969728,1,multiple myeloma,SLE+Sjogren's mimicking multiple myeloma,AI-proposed
+40962526,0,,TMA correctly diagnosed as SLE/lupus nephritis; no misdiagnosis,AI-proposed
+40951187,0,,Susac syndrome; not an SLE confusion,AI-proposed
+40941642,0,,CSCR vs HCQ toxicity; not SLE confusion,AI-proposed
+40936738,0,,Adult leukoencephalopathy; not SLE,AI-proposed
+40927126,0,,NUD vs urticaria dermatosis; not SLE-vs-X,AI-proposed
+40918104,0,,NPSLE with primary CNS DLBCL; coexistence,AI-proposed
+40842759,0,,KFD patient developing SLE; progression not misdiagnosis,AI-proposed
+40842548,1,systemic lupus erythematosus,Visceral leishmaniasis misdiagnosed as SLE,AI-proposed
+40833003,1,tuberculosis,SLE with HLH mimicking TB,AI-proposed
+40784616,1,burning mouth syndrome,Oral SLE lesions misattributed to burning mouth syndrome,AI-proposed
+40764592,0,,GI hemorrhage as SLE manifestation; generic delay no named wrong dx,AI-proposed
+40693001,1,aortic intramural hematoma,Lupus aortitis mimicking aortic intramural hematoma,AI-proposed
+40677507,1,infection,Azathioprine hypersensitivity mimicking infection,AI-proposed
+40527843,0,,Isolated thrombocytopenia as initial SLE; no named wrong dx,AI-proposed
+40486548,0,,KFD vs lymphoma; not SLE,AI-proposed
+40486387,0,,Sequential SLE in anti-MDA5 DM; coexistence,AI-proposed
+40469298,1,malignant rectal carcinoma,Malakoplakia mimicking malignant rectal carcinoma,AI-proposed
+40461984,0,,SLE with Jaccoud arthropathy; no misdiagnosis,AI-proposed
+40453280,1,eating disorder,SLE mimicking a possible eating disorder,AI-proposed
+40417975,0,,LPD/angioedema in SLE+Sjogren's; coexistence,AI-proposed
+40399059,1,aseptic meningitis,Lymphocytic hypophysitis initially diagnosed as aseptic meningitis,AI-proposed
+40352213,0,,Pediatric SLE cardiomyopathy; delay no named wrong dx,AI-proposed
+40212399,0,,SLE+MPO-ANCA overlap syndrome; coexistence,AI-proposed
+40191701,1,seronegative rheumatoid arthritis,SLE initially diagnosed as seronegative RA,AI-proposed
+40161106,0,,Lupus cystitis before SLE established; no named wrong dx,AI-proposed
+40128991,1,idiopathic multicentric Castleman disease,Plasma cell nephritis mimicking iMCD,AI-proposed
+40119328,0,,Retinal vasculitis is an SLE manifestation not a wrong diagnosis,AI-proposed
+40110311,0,,Necrotizing fasciitis/cutaneous TB in SLE; complication,AI-proposed
+40057697,1,erythema multiforme,SLE oral lesions masquerading as erythema multiforme,AI-proposed
+40046376,1,dermatomyositis,Initially diagnosed as dermatomyositis later SLE overlap,AI-proposed
+39968326,1,,12 years of misdiagnosis of juvenile-onset SLE in a boy,AI-proposed
+39912674,0,,Thiotepa toxicity mimicking SJS/TEN; not SLE,AI-proposed
+39896180,1,mediastinal lymphoma,Pericardial mesothelioma mimicking lymphoma and systemic rheumatic disease,AI-proposed
+39794027,0,,Polypoid endometriosis mimicking malignancy; not SLE confusion,AI-proposed
+39732732,0,,Evans syndrome is an SLE presentation not a wrong diagnosis,AI-proposed
+39726541,1,primary antiphospholipid syndrome,APS preceding SLE; initially diagnosed as primary APS,AI-proposed
+39703291,1,ovarian malignancy,Pseudo-pseudo Meigs CA-125 mimicking ovarian tumor,AI-proposed
+39675468,1,autoimmune necrotizing scleritis,Pseudomonas scleritis mimicking autoimmune necrotizing scleritis,AI-proposed
+39637678,1,systemic lupus erythematosus,Leprosy rash misdiagnosed as SLE flare,AI-proposed
+39588906,1,tuberculous arthritis,Adult-onset Still's initially diagnosed as tuberculous arthritis and SLE,AI-proposed
+39479075,1,infective enterocolitis,Lupus enteritis initial SLE manifestation mimicking infective enterocolitis,AI-proposed
+39479059,1,aseptic meningitis,SLE masquerading as aseptic meningitis,AI-proposed
+39163085,1,tubercular pericarditis,Effusive pericarditis overlap mimicking tubercular pericarditis,AI-proposed
+39127821,1,migraine,Juvenile NPSLE recurrent headache misdiagnosed as migraine,AI-proposed
+39119967,1,,RVCL-S coexisting with SLE; prone to misdiagnosis,AI-proposed
+39113973,1,sporotrichosis,M. marinum infection misdiagnosed as sporotrichosis,AI-proposed
