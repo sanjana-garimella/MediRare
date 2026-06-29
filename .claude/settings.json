@@ -1,0 +1,44 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(python3 nlp/*:*)",
+      "Bash(python3 scripts/*:*)",
+      "Bash(python3 schemas/*:*)",
+      "Bash(python3 integration/*:*)",
+      "Bash(python3 -m pytest*)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git pull)",
+      "Bash(git add*)",
+      "Bash(find . *)",
+      "Bash(ls*)",
+      "Bash(wc -l *)",
+      "Bash(grep *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/gate_git_push.sh"
+          }
+        ]
+      }
+    ],
+    "PermissionDenied": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "mkdir -p .claude/logs && jq -c . >> .claude/logs/denied.jsonl 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
