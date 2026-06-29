@@ -1,0 +1,51 @@
+pubmed_id,has_misdiagnosis,true_wrong_diagnosis,rationale,review_status
+42362294,0,,No abstract; title is endometriosis mimicking malignancy (not an SLE misdiagnosis),AI-proposed
+42359320,0,,SLE patient with foreign-body hepatic abscess; no prior wrong diagnosis,AI-proposed
+42344911,0,,NPSLE presenting as ICH; workup led to SLE with no prior wrong dx,AI-proposed
+42333341,0,,McConnell's sign suggests PE but is a differential/sign not an assigned wrong dx,AI-proposed
+42329349,0,,Retiform purpura as unusual SLE presentation; direct workup to SLE,AI-proposed
+42326169,0,,Bullous SLE in already-known SLE patient,AI-proposed
+42325589,0,,Lupus enteritis mimics listed generically; prior dx is SLE itself not a wrong dx,AI-proposed
+42324723,0,,No abstract; title suggests primary APS label but not confirmable from text,AI-proposed
+42321940,1,SLE,Leprosy initially misdiagnosed as SLE (reverse direction: SLE was the wrong label),AI-proposed
+42319627,1,acute appendicitis,Child diagnosed with acute appendicitis at surgery; actually disseminated TB + early-onset SLE,AI-proposed
+42317916,0,,Uterine necrosis in SLE patient; no misdiagnosis,AI-proposed
+42317892,0,,Autopsy coexistence of MPA/SLE/amyloidosis; no misdiagnosis trail,AI-proposed
+42305704,0,,CAPS in newly diagnosed SLE; overlap challenges described generically,AI-proposed
+42292460,0,,Libman-Sacks endocarditis in known SLE/APS,AI-proposed
+42290181,0,,Gingival necrosis in SLE patient,AI-proposed
+42287193,0,,Known 45-yr SLE develops NMOSD; not a misdiagnosis,AI-proposed
+42287064,1,hypothyroidism,B-cell lymphoma mimicking SLE; initially treated for hypothyroidism/hypoproteinemia,AI-proposed
+42266541,0,,Childhood SLE with growth retardation; diagnostic delay but no named wrong dx,AI-proposed
+42265706,0,,Libman-Sacks + malaria in known 4-yr SLE,AI-proposed
+42256376,0,,Prior AS diagnosis is a true coexisting condition not a misdiagnosis,AI-proposed
+42254220,0,,Dermatomyositis-SLE overlap; coexistence,AI-proposed
+42254203,0,,PRES as SLE presentation; no prior wrong dx,AI-proposed
+42254196,0,,Concurrent SLE and AS; coexistence,AI-proposed
+42254151,0,,CMV-HLH revealing SLE; no prior wrong dx,AI-proposed
+42254014,0,,GBS after E. coli meningitis in SLE patient; no misdiagnosis,AI-proposed
+42243916,0,,MAS in pediatric SLE,AI-proposed
+42231426,0,,Aortic surgery in SLE patient with prior STEMI,AI-proposed
+42220782,0,,Organizing pneumonia as initial SLE manifestation; recurrent pneumonia is history not named wrong dx,AI-proposed
+42218403,0,,Suprachoroidal effusion in active SLE,AI-proposed
+42216130,0,,IgA nephropathy association study in SLE,AI-proposed
+42204705,0,,SLE presenting with slurred speech; direct referral to rheumatology,AI-proposed
+42199417,0,,Purtscher-like retinopathy secondary to known 8-yr SLE,AI-proposed
+42183258,0,,Neonatal lupus genetic case,AI-proposed
+42181216,0,,Noonan-like disorder; SLE could not be excluded (differential),AI-proposed
+42176205,0,,Splenic calcifications led to SLE dx; no prior wrong dx,AI-proposed
+42169141,0,,Rhupus (RA+SLE overlap); coexistence,AI-proposed
+42165750,0,,Discoid lupus in genital skin; overlap with dermatoses described generically,AI-proposed
+42160240,1,pyrexia of unknown origin,jSLE initially diagnosed as pyrexia of unknown origin,AI-proposed
+42159815,0,,Autoimmune retinopathy in TLR7 interferonopathy,AI-proposed
+42158777,0,,PRES as initial SLE presentation; no prior wrong dx,AI-proposed
+42147803,0,,C1q deficiency presenting as early-onset SLE,AI-proposed
+42147651,0,,Kikuchi-Fujimoto disease + SLE; diagnostic challenge but no named wrong dx,AI-proposed
+42144295,0,,Cytokine release syndrome post-ATG in SLE transplant patient,AI-proposed
+42139076,0,,Lymphoproliferative disorder in SLE patient,AI-proposed
+42136647,0,,Acquired FXIII deficiency; ANA-negative delayed dx but no named wrong dx,AI-proposed
+42135975,0,,Nocardiosis in SLE on prophylaxis; sequential infections,AI-proposed
+42131627,0,,MCTD digital gangrene case in known MCTD,AI-proposed
+42131336,0,,Splenectomy for SLE-AIHA,AI-proposed
+42116972,0,,M. fortuitum ulcer; pyoderma gangrenosum/vasculitis were differentials only,AI-proposed
+42112145,0,,IgG4-related disease; pancreatic cancer was a suspicion/differential not assigned dx,AI-proposed
