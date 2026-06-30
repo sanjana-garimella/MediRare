@@ -87,16 +87,16 @@ case reports; scale with `--retmax 200` (NCBI per-run cap; batch for more).
 
 ### CV — Clinical Figures
 
-Regenerated reproducibly from all 150 records via `cv/fetch_pmc_figures.py`
-(PubMed → PMC open-access → figure XML). **103 of 150 are open-access**, yielding
-**296 figures** with captions and type labels:
+Regenerated reproducibly from all 200 records via `cv/fetch_pmc_figures.py`
+(PubMed → PMC open-access → figure XML). **147 of 200 are open-access**, yielding
+**437 figures** with captions and type labels:
 
 | Disease | Open-Access Articles | Figures | Type breakdown |
 |---|---|---|---|
-| SLE | 30 | 87 | imaging 23, histology 11, rash 8, lab_chart 6, other 39 |
+| SLE | 75 | 231 | imaging 72, histology 28, rash 25, lab_chart 19, other 87 |
 | Sjögren's | 40 | 106 | imaging 31, histology 16, lab_chart 11, rash 4, other 44 |
-| MCTD | 33 | 103 | imaging 28, lab_chart 8, rash 7, histology 4, other 56 |
-| **Total** | **103** | **296** | imaging 82, other 139, histology 31, lab_chart 25, rash 19 |
+| MCTD | 32 | 100 | imaging 28, lab_chart 8, rash 7, histology 4, other 53 |
+| **Total** | **147** | **437** | imaging 131, other 184, histology 48, lab_chart 38, rash 36 |
 
 Figure type is assigned by caption keyword matching (imaging / histology /
 lab_chart / rash_image) as a first pass, before any model-based classification.
@@ -107,7 +107,7 @@ the image binaries requires the PMC OA bulk service (see roadmap).
 
 | Asset | Records | Status |
 |---|---|---|
-| Gold annotated cases | 10 | Hand-crafted with expert misdiagnosis trails |
+| Gold annotated cases | 10 | **Synthetic placeholders** (`SYN_001`–`SYN_010`), not expert-annotated — see note below |
 | HPO phenotype mappings | 31 | SLE (10), Sjögren's (10), MCTD (11) |
 | Label / annotation guide | — | Complete for all 3 diseases |
 
@@ -144,10 +144,10 @@ Misdiagnosis  Research
 ## Roadmap
 
 ### Phase 1 — Data & Extraction (Current)
-- [x] 150 real PubMed case reports fetched (50 × 3 diseases)
-- [x] 17 clinical figures identified from 8 open-access articles
+- [x] 200 real PubMed case reports fetched (SLE 100, Sjögren's 50, MCTD 50)
+- [x] 437 clinical figures identified from 147 open-access articles
 - [x] HPO phenotype mappings for all 3 diseases
-- [x] Gold annotation set (10 hand-crafted cases)
+- [x] Gold annotation set (10 synthetic placeholder cases — not expert-annotated)
 - [ ] Misdiagnosis sequence extraction — regex pass first, then PubMedBERT
 - [ ] Fix Sjögren's search query (narrow to primary Sjögren's)
 - [ ] Scale to 200 records/disease
@@ -156,7 +156,7 @@ Misdiagnosis  Research
 - [ ] Regex extractor: populate `misdiagnosis_sequence` from all 150 records
 - [ ] PubMedBERT fine-tuning on gold-annotated cases
 - [ ] Build misdiagnosis knowledge graph (NetworkX)
-- [ ] Validate against 10 gold cases — target 9/10 match
+- [ ] Replace 10 synthetic gold cases with real expert-annotated cases, then validate — target 9/10 match
 
 ### Phase 3 — CV Pipeline (Weeks 3–5)
 - [ ] Figure type classifier: ViT zero-shot → fine-tune on labeled figures

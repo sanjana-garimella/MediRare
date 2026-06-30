@@ -42,13 +42,13 @@ def test_extracted_figure_valid_minimal():
 
 def test_biomedical_csv_templates_have_expected_headers():
     # These templates are committed and should not change silently.
-    annotations = "data/biomedical/annotations.csv"
-    mapping = "data/biomedical/hpo_mapping.csv"
+    annotations = "data/biomedical/annotated_cases.csv"
+    mapping = "data/biomedical/hpo_mapping_table.csv"
 
     with open(annotations, "r", encoding="utf-8") as f:
         first = f.readline().strip()
-    assert first == "pubmed_id,final_diagnosis,misdiagnoses_before_correct,key_symptoms,notes"
+    assert first == "pubmed_id,disease,title,abstract,misdiagnosis_sequence,extracted_at,annotation_confidence,annotator_notes"
 
     with open(mapping, "r", encoding="utf-8") as f:
         first = f.readline().strip()
-    assert first == "symptom_phrase,hpo_id,hpo_label,disease,notes"
+    assert first == "disease,hpo_id,hpo_term,phenotype_category,clinical_relevance,notes"
