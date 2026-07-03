@@ -21,10 +21,17 @@ Pass 1 (high confidence): named wrong-diagnosis patterns
 Pass 2 (medium confidence): semantic indicators
   - "initially/first treated/managed as/for <X>"
   - "thought to have <X>"
+  - "suspicious of <X>" / "suspected <X>"
 
-Where keywords appear but no entity can be extracted cleanly, the record is
-flagged as KEYWORD_NO_ENTITY in the report — these are the cases where
-keywords alone are not enough and NLP/LLM is needed next.
+Pass 3 (gazetteer fallback): when a misdiagnosis keyword fires but no regex
+pattern parses a clean entity, check the abstract for a literal mention of a
+condition from a curated list of documented SLE mimics (see
+docs/research_references.md). Lower confidence than regex matches — never
+overrides them.
+
+Where keywords appear but no entity can be extracted (by regex or gazetteer),
+the record is flagged as KEYWORD_NO_ENTITY in the report — these are the
+cases where NLP/LLM is needed next.
 
 Output
 ------
@@ -55,12 +62,24 @@ _TRAILING_FILLER = re.compile(
     re.I,
 )
 
-# Common noise terms that suggest captured entity is not a disease name
+# Common noise terms that suggest captured entity is not a disease name.
+# \b after the group matters: without it, the "a"/"an"/"the" alternatives
+# match as bare prefixes of unrelated words ("anorexia" starts with "an").
 _NOISE_START = re.compile(
     r"^(?:the|this|a|an|its|their|these|following|above|below|"
     r"symptom|sign|finding|evaluation|investigation|workup|"
     r"treatment|therapy|patient|case|report|study|literature|"
-    r"result|outcome|data|underlying|concurrent|coexist)",
+    r"result|outcome|data|underlying|concurrent|coexist)\b",
+    re.I,
+)
+
+# Person-descriptor words: if these appear anywhere in a captured entity, it's
+# a mis-scoped subject-NP capture (e.g. "female patient who"), not a diagnosis.
+# Needed because passive-voice patterns ("X was initially diagnosed") have no
+# fixed left boundary and can walk backward into the sentence's subject.
+_PERSON_DESCRIPTOR = re.compile(
+    r"\b(?:patient|case|individual|subject|woman|man|male|female|boy|girl|"
+    r"child|infant|adult|who|she|he|they|year-old|man\b|woman\b)\b",
     re.I,
 )
 
@@ -90,15 +109,21 @@ def _clean_entity(raw: str) -> str | None:
     # starts with a known-noise term
     if _NOISE_START.match(e):
         return None
+    # contains a person-descriptor word -> mis-scoped subject-NP, not a diagnosis
+    if _PERSON_DESCRIPTOR.search(e):
+        return None
     return e.lower().strip(" .,;-")
 
 
 def _filter_target(entity: str, disease: str) -> bool:
     """Return True if entity is a target disease (should be excluded)."""
     e = entity.lower()
-    if any(t in e for t in _TARGET_TERMS):
+    # Word-boundary match, not raw substring: "myositis" must not match inside
+    # "dermatomyositis"/"polymyositis" — those are real wrong-diagnosis mimics
+    # of SLE, not the (undergrad-scope) Inflammatory Myositis target itself.
+    if any(re.search(rf"\b{re.escape(t)}\b", e) for t in _TARGET_TERMS):
         return True
-    if disease.lower().replace("_", " ") in e:
+    if re.search(rf"\b{re.escape(disease.lower().replace('_', ' '))}\b", e):
         return True
     return False
 
@@ -107,7 +132,9 @@ def _filter_target(entity: str, disease: str) -> bool:
 
 # Capture group: 1–6 words up to sentence/clause boundary
 _W = r"([\w][\w\s'\-]{2,60}?)"
-_STOP = r"(?=[,;.!?]|\s+(?:and\b|but\b|however\b|which\b|who\b|that\b|was\b|were\b|after\b|before\b|until\b|while\b)|$)"
+# Stop before punctuation, a following parenthetical (e.g. "NMOSD (an X)" or a
+# trailing acronym gloss "X (ABBR)"), or one of these clause-boundary words.
+_STOP = r"(?=[,;.!?(]|\s+(?:and\b|but\b|however\b|which\b|who\b|that\b|was\b|were\b|after\b|before\b|until\b|while\b)|$)"
 
 HIGH_CONFIDENCE: list[re.Pattern] = [
     # "initially diagnosed as/with X"
@@ -126,6 +153,10 @@ HIGH_CONFIDENCE: list[re.Pattern] = [
     re.compile(rf"delayed\s+diagnosis\s+of\s+{_W}{_STOP}", re.I),
     # "referred after X years with a diagnosis of Y"
     re.compile(rf"referred\s+after.{{3,60}}?diagnosis\s+of\s+{_W}{_STOP}", re.I),
+    # "X was initially/first diagnosed" — passive voice, entity precedes the verb.
+    # Bounded to <=4 words (disease-name subjects are short) so it can't walk
+    # back across a whole sentence when there's no comma/period to stop it.
+    re.compile(rf"((?:[A-Za-z][\w'\-]*\s+){{0,3}}[A-Za-z][\w'\-]*)\s+(?:was|were)\s+(?:initially|first)\s+diagnosed\b", re.I),
 ]
 
 # "X masquerading/mimicking as SLE/lupus" → X is a condition wrongly called lupus
@@ -138,7 +169,18 @@ _MASQUERADE = re.compile(
 MEDIUM_CONFIDENCE: list[re.Pattern] = [
     re.compile(rf"initially\s+(?:treated|managed)\s+(?:as|for)\s+{_W}{_STOP}", re.I),
     re.compile(rf"thought\s+to\s+have\s+{_W}{_STOP}", re.I),
+    # "suspicious of X" / "suspected X" — a working diagnosis considered before the real one
+    re.compile(rf"suspicious\s+of\s+{_W}{_STOP}", re.I),
+    re.compile(rf"suspected\s+(?:of\s+having\s+|to\s+have\s+)?{_W}{_STOP}", re.I),
 ]
+
+# NOTE: a generic forward-direction "mimick*/masquerad* <X>" pattern (without
+# requiring "...as SLE/lupus") was tried and removed — it matched "mimicking
+# <symptom/manifestation>" (e.g. "mimicking a LN flare", "mimicking vascular,
+# infectious ... processes") far more often than it matched a real named wrong
+# diagnosis. Same trap the module already documents for "presenting as X".
+# _MASQUERADE below (which anchors on "...as SLE/lupus") stays; it doesn't
+# share this problem because the target-disease anchor rules out symptom talk.
 
 # Signal-only: keyword present but entity extraction is the hard part
 _SIGNAL_ONLY = re.compile(
@@ -146,6 +188,59 @@ _SIGNAL_ONLY = re.compile(
     r"delayed diagnosis|wrongly diagnosed|masquerad|mimick",
     re.I,
 )
+
+# ── gazetteer fallback ──────────────────────────────────────────────────────
+#
+# Curated list of conditions documented to be mistaken for / mistaken as SLE,
+# from "Mimickers of Systemic Lupus Erythematosus: Case Series and Literature
+# Overview" (PMC12525093, see docs/research_references.md). Used only as a
+# last resort when a misdiagnosis keyword fires (_SIGNAL_ONLY) but no regex
+# pattern could parse a clean entity out of the sentence structure — i.e. it
+# never competes with or overrides a HIGH/MEDIUM regex match.
+_KNOWN_SLE_MIMICS = (
+    "LRBA deficiency", "CTLA-4 insufficiency", "HELIOS deficiency",
+    "SOCS1 haploinsufficiency", "TLR7 deficiency", "UNC93B1 deficiency",
+    "IRE1α deficiency", "DOCK11 deficiency",
+    "autoimmune lymphoproliferative disorder", "DNASE1L3 deficiency", "SPENCD",
+    "Aicardi-Goutières syndrome", "AGS", "SAVI", "PRAAS",
+    "Singleton-Merten syndrome",
+    "dermatomyositis", "polymyositis", "Still's disease",
+    "neuromyelitis optica spectrum disorder", "NMOSD", "multiple sclerosis",
+    "Castleman disease",
+    "parvovirus B19", "endocarditis", "hepatitis", "HIV", "Epstein-Barr virus",
+    "cytomegalovirus", "Borrelia", "Lyme disease", "toxoplasmosis",
+    "histoplasmosis", "tuberculosis", "leprosy", "leishmaniasis",
+    "Whipple's disease",
+    "angioimmunoblastic T-cell lymphoma", "lymphoma",
+    "myelodysplastic syndrome", "atrial myxoma",
+    "drug-induced lupus",
+    "graft-versus-host disease",
+    "hypocomplementemic urticarial vasculitis syndrome", "Schnitzler syndrome",
+)
+_MIMIC_GAZETTEER = [
+    (term, re.compile(rf"\b{re.escape(term)}\b", re.I)) for term in _KNOWN_SLE_MIMICS
+]
+
+
+def _gazetteer_match(abstract: str, disease: str) -> list[str]:
+    """
+    Only accept a mimic-term match if it shares a sentence with a misdiagnosis
+    signal keyword. Without this, generic differential-diagnosis boilerplate
+    ("...KFD mimics infectious, autoimmune, or malignant disorders like
+    lymphoma...") matches on term presence alone, unrelated to what actually
+    happened to this patient — same class of false positive as PMID 39912674,
+    40110311, 40936738 etc. in the eval run that added this gazetteer.
+    """
+    found: list[str] = []
+    for sentence in re.split(r"(?<=[.!?])\s+", abstract):
+        if not _SIGNAL_ONLY.search(sentence):
+            continue
+        for term, pat in _MIMIC_GAZETTEER:
+            if pat.search(sentence):
+                entity = term.lower()
+                if not _filter_target(entity, disease) and entity not in found:
+                    found.append(entity)
+    return found
 
 
 # ── main extraction logic ─────────────────────────────────────────────────────
@@ -193,6 +288,9 @@ def extract(abstract: str, disease: str) -> tuple[list[str], str]:
         return med, "medium"
 
     if _SIGNAL_ONLY.search(abstract):
+        gaz = _gazetteer_match(abstract, disease)
+        if gaz:
+            return gaz, "gazetteer"
         return [], "signal_only"
 
     return [], "none"
@@ -218,7 +316,7 @@ def main() -> int:
             if line:
                 records.append(json.loads(line))
 
-    stats = {"high": 0, "medium": 0, "signal_only": 0, "none": 0, "no_abstract": 0}
+    stats = {"high": 0, "medium": 0, "gazetteer": 0, "signal_only": 0, "none": 0, "no_abstract": 0}
     signal_only_pmids: list[str] = []
     extracted_examples: list[tuple[str, list[str]]] = []
     updated: list[dict] = []
@@ -246,7 +344,7 @@ def main() -> int:
 
     # ── report ────────────────────────────────────────────────────────────────
     total = len(records)
-    populated = stats["high"] + stats["medium"]
+    populated = stats["high"] + stats["medium"] + stats["gazetteer"]
     print(f"\n{'='*60}")
     print(f"Misdiagnosis extraction — {path.name}")
     print(f"{'='*60}")
@@ -254,6 +352,7 @@ def main() -> int:
     print(f"  No abstract        : {stats['no_abstract']}")
     print(f"  High-confidence    : {stats['high']:>3}  (keyword + named entity extracted)")
     print(f"  Medium-confidence  : {stats['medium']:>3}  (semantic indicator + entity)")
+    print(f"  Gazetteer          : {stats['gazetteer']:>3}  (keyword + known SLE-mimic name matched)")
     print(f"  Signal only        : {stats['signal_only']:>3}  (keyword found, entity unclear — NLP needed)")
     print(f"  No signal          : {stats['none']:>3}  (no misdiagnosis indicators)")
     print(f"  misdiagnosis_sequence populated : {populated}/{total}")
