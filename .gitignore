@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 .venv/
+.venv-*/
 
 # OS
 .DS_Store
@@ -12,3 +13,12 @@ data/cv/pdfs/
 data/cv/figures/
 integration/merged_records.jsonl
 
+# Added by code-review-graph
+.code-review-graph/
+
+# Claude Code local runtime state
+.claude/logs/
+.claude/*.bak
+
+# Cursor-targeted skill copies (byproduct of skills installer, not used by Claude Code)
+.agents/
