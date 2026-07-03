@@ -1,0 +1,14 @@
+# Optional deps for `cv/fetch_pmc_figures.py --classify-images` (BiomedCLIP
+# zero-shot figure classification). Not in cv/requirements.txt: these pull in
+# torch + torchvision and a ~350MB model download on first run, which is a
+# lot to impose on everyone who just wants figure metadata / captions.
+#
+# Install into an isolated venv, not the global environment — open_clip_torch
+# pulls a torch version that can silently upgrade/conflict with whatever
+# torch version other tools on your machine already depend on:
+#
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install -r cv/requirements.txt -r cv/requirements-classify.txt
+#   python3 cv/fetch_pmc_figures.py --jsonl ... --out ... --download-images --classify-images
+
+open_clip_torch
