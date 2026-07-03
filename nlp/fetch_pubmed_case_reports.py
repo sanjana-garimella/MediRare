@@ -6,7 +6,10 @@ Goal: Fetch 20-30 PubMed case report records for a target disease and write:
 - processed JSONL to data/nlp/processed/
 
 Notes:
-- This script uses PubMed E-utilities (official NCBI API).
+- This script queries PubMed via paperscraper's `get_pubmed_papers` (pymed under
+  the hood), which itself calls NCBI E-utilities. We pass raw PubMed query
+  syntax straight through (see DISEASE_TERMS / MISDIAGNOSIS_TERMS), so query
+  semantics are unchanged from the previous direct-E-utilities implementation.
 - Week 1 parsing is intentionally "good enough": title/abstract extraction covers most cases
   and is easy to improve later.
 """
@@ -15,17 +18,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
+from xml.etree import ElementTree as ET
 
-import requests
-from lxml import etree
-
-
-EUTILS_BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
+from paperscraper.pubmed import get_pubmed_papers
 
 
 DISEASE_TERMS = {
@@ -64,66 +63,38 @@ def _iso_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def esearch(term: str, retmax: int) -> list[str]:
-    r = requests.get(
-        EUTILS_BASE + "esearch.fcgi",
-        params={"db": "pubmed", "term": term, "retmax": retmax, "retmode": "json"},
-        timeout=60,
+def fetch_case_reports(term: str, retmax: int, disease: str) -> tuple[list[CaseReport], list[ET.Element]]:
+    """
+    Query PubMed via paperscraper's get_pubmed_papers (pymed -> NCBI
+    E-utilities under the hood), passing `term` through as raw PubMed query
+    syntax unchanged. Returns parsed CaseReport rows plus each record's raw
+    PubmedArticle XML element (for archival to data/nlp/raw/).
+    """
+    df = get_pubmed_papers(
+        term, fields=["pubmed_id", "title", "abstract", "xml"], max_results=retmax
     )
-    r.raise_for_status()
-    return r.json()["esearchresult"]["idlist"]
-
-
-def efetch_xml(ids: Iterable[str]) -> str:
-    r = requests.get(
-        EUTILS_BASE + "efetch.fcgi",
-        params={"db": "pubmed", "id": ",".join(ids), "retmode": "xml"},
-        timeout=60,
-    )
-    r.raise_for_status()
-    return r.text
-
-
-def parse_pubmed_xml(xml_text: str, disease: str) -> list[CaseReport]:
-    # Minimal extraction: PMID, title, abstract.
-    root = etree.fromstring(xml_text.encode("utf-8"))
-    out: list[CaseReport] = []
     extracted_at = _iso_now()
 
-    for article in root.findall(".//PubmedArticle"):
-        pmid_el = article.find(".//MedlineCitation/PMID")
-        if pmid_el is None or not (pmid_el.text or "").strip():
+    rows: list[CaseReport] = []
+    xml_elements: list[ET.Element] = []
+    for row in df.to_dict(orient="records"):
+        pubmed_id = str(row["pubmed_id"]).strip().split("\n")[0]
+        if not pubmed_id:
             continue
-        pubmed_id = pmid_el.text.strip()
-
-        title_el = article.find(".//Article/ArticleTitle")
-        title = "".join(title_el.itertext()).strip() if title_el is not None else ""
-
-        abs_el = article.find(".//Article/Abstract")
-        if abs_el is None:
-            abstract = ""
-        else:
-            parts = []
-            for at in abs_el.findall(".//AbstractText"):
-                label = (at.get("Label") or "").strip()
-                txt = "".join(at.itertext()).strip()
-                if not txt:
-                    continue
-                parts.append(f"{label}: {txt}" if label else txt)
-            abstract = "\n".join(parts).strip()
-
-        out.append(
+        rows.append(
             CaseReport(
                 pubmed_id=pubmed_id,
                 disease=disease,
-                title=title,
-                abstract=abstract,
+                title=(row.get("title") or "").strip(),
+                abstract=(row.get("abstract") or "").strip(),
                 misdiagnosis_sequence=[],
                 extracted_at=extracted_at,
             )
         )
+        if isinstance(row.get("xml"), ET.Element):
+            xml_elements.append(row["xml"])
 
-    return out
+    return rows, xml_elements
 
 
 def write_jsonl(path: Path, rows: Iterable[CaseReport]) -> None:
@@ -143,7 +114,6 @@ def main() -> int:
         default="misdiagnosis",
         help="general = all case reports; misdiagnosis = only diagnostic-error/mimic cases (default)",
     )
-    ap.add_argument("--sleep_s", type=float, default=0.34, help="Be polite to NCBI.")
     args = ap.parse_args()
 
     if args.retmax > 200:
@@ -155,14 +125,13 @@ def main() -> int:
     Path("data/nlp/raw").mkdir(parents=True, exist_ok=True)
     Path("data/nlp/processed").mkdir(parents=True, exist_ok=True)
 
-    ids = esearch(term, retmax=args.retmax)
-    time.sleep(args.sleep_s)
-    xml_text = efetch_xml(ids)
+    rows, xml_elements = fetch_case_reports(term, retmax=args.retmax, disease=args.disease)
 
+    raw_root = ET.Element("PubmedArticleSet")
+    for el in xml_elements:
+        raw_root.append(el)
     raw_path = Path(f"data/nlp/raw/{args.disease}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xml")
-    raw_path.write_text(xml_text, encoding="utf-8")
-
-    rows = parse_pubmed_xml(xml_text, disease=args.disease)
+    ET.ElementTree(raw_root).write(raw_path, encoding="utf-8", xml_declaration=True)
 
     out_path = Path(f"data/nlp/processed/{args.disease.lower()}_case_reports.jsonl")
     write_jsonl(out_path, rows)
