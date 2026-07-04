@@ -5,7 +5,9 @@ Multimodal AI system to detect misdiagnosis patterns in rare autoimmune diseases
 Pipeline: PubMed case reports (NLP) + figure extraction (CV) → misdiagnosis knowledge graph → LLM reasoning agent → per-disease research reports.
 
 ## Current focus: SLE + Sjögren's (working end-to-end)
-MCTD, Inflammatory Myositis, and Antiphospholipid Syndrome are undergrad scope.
+MCTD, Inflammatory Myositis, and Antiphospholipid Syndrome are **out of scope
+entirely** until SLE + Sjögren's are complete — do not fetch, extract, or
+otherwise touch data for these diseases in the meantime, even opportunistically.
 
 ## Commands
 - Fetch data:     `python3 nlp/fetch_pubmed_case_reports.py --disease SLE --retmax 50`
@@ -43,6 +45,7 @@ MCTD, Inflammatory Myositis, and Antiphospholipid Syndrome are undergrad scope.
 - Never commit raw XML files from `data/nlp/raw/`
 - Never fetch > 200 records per disease per run (NCBI rate limit)
 - Never add a new disease without: (1) `DISEASE_TERMS` entry, (2) HPO rows, (3) label guide section
+- Never do fetch/extract/CV work for MCTD, Inflammatory Myositis, or Antiphospholipid Syndrome until SLE + Sjögren's are complete
 - Never return raw dict from pipeline functions — use schemas in `schemas/`
 - Never run network calls inside `tests/` unit tests
 

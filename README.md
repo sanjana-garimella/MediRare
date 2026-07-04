@@ -181,9 +181,9 @@ Misdiagnosis  Research
 |---|---|---|
 | Systemic Lupus Erythematosus | Core team | Active — end-to-end pipeline target |
 | Sjögren's Syndrome | Core team | Active — end-to-end pipeline target |
-| Mixed Connective Tissue Disease | Undergrads | Data fetched, same pipeline applies |
-| Inflammatory Myositis | Undergrads | No data yet |
-| Antiphospholipid Syndrome | Undergrads | No data yet |
+| Mixed Connective Tissue Disease | Undergrads | **Out of scope** until SLE + Sjögren's are complete |
+| Inflammatory Myositis | Undergrads | **Out of scope** until SLE + Sjögren's are complete |
+| Antiphospholipid Syndrome | Undergrads | **Out of scope** until SLE + Sjögren's are complete |
 
 ---
 

@@ -20,5 +20,5 @@ globs:
 
 ## Disease scope
 - **Active (you own):** SLE, Sjögren's — build end-to-end pipeline for these.
-- **Undergrad scope:** MCTD, Inflammatory Myositis, Antiphospholipid Syndrome — do not block on these.
-- When adding a new disease, always add: (1) entry in `DISEASE_TERMS` in `nlp/fetch_pubmed_case_reports.py`, (2) rows in `hpo_mapping_table.csv`, (3) section in `label_guide.md`.
+- **Out of scope until SLE + Sjögren's are complete:** MCTD, Inflammatory Myositis, Antiphospholipid Syndrome. Do not fetch, extract, or process data for these — not even opportunistically alongside SLE/Sjögren's work.
+- When adding a new disease (only once SLE + Sjögren's are done), always add: (1) entry in `DISEASE_TERMS` in `nlp/fetch_pubmed_case_reports.py`, (2) rows in `hpo_mapping_table.csv`, (3) section in `label_guide.md`.

@@ -1,7 +1,7 @@
 ---
 name: fetch-disease
 description: Fetch PubMed case reports for a disease, run quality review, and report results.
-when_to_use: Use when someone says "fetch data for X", "get PubMed records for X", or "add X to the pipeline". Do NOT use for undergrad diseases (MCTD, Inflammatory Myositis, APS) without Sanjana's confirmation.
+when_to_use: Use when someone says "fetch data for X", "get PubMed records for X", or "add X to the pipeline" — for SLE or Sjögren's only. Do NOT use for MCTD, Inflammatory Myositis, or APS at all — they are out of scope until SLE + Sjögren's are complete (see .claude/rules/data.md).
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash(python3:*), Bash(grep:*), Bash(wc:*)
 ---
@@ -9,7 +9,7 @@ allowed-tools: Read, Write, Edit, Bash(python3:*), Bash(grep:*), Bash(wc:*)
 
 ## Steps
 
-1. **Check scope** — SLE and Sjögren's are Sanjana's. MCTD/Inflammatory Myositis/APS are undergrad scope, confirm before fetching.
+1. **Check scope** — only SLE and Sjögren's are in scope right now. MCTD/Inflammatory Myositis/APS are out of scope entirely until both are complete — do not fetch for them even with confirmation; stop and tell Sanjana instead.
 
 2. **Check `DISEASE_TERMS`** in `nlp/fetch_pubmed_case_reports.py`. If the disease is missing, add it using `"primary [disease name]" AND "case report"` to reduce noise.
 

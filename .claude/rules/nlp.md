@@ -16,9 +16,12 @@ globs:
 - Do not add bioRxiv/medRxiv/arXiv as sources: sampled and found near-zero case-report-format content (cohort studies, trials, and ML papers instead), and none of those APIs support keyword search (category+date filtering only).
 
 ## Data quality
-- Sjögren's search term must be `"primary Sjögren's syndrome" AND "case report"` — the plain `"Sjogren syndrome"` query returns 13/50 noise records.
+- Sjögren's must be fetched with `--focus misdiagnosis` (the default), which uses `MISDIAGNOSIS_TERMS["Sjogrens"]` (`"primary Sjogren's syndrome"[tiab] AND ...`) — not `--focus general`/`DISEASE_TERMS["Sjogrens"]` (`"Sjogren syndrome" AND "case report"`), which returns real off-topic noise (e.g. matches "Marinesco-Sjögren syndrome," a genetically unrelated disease, purely on substring).
 - After any fetch, run the keyword signal check to confirm >5% of records contain misdiagnosis keywords.
 - The `misdiagnosis_sequence` field must never be silently left as `[]` in final output — always note if extraction hasn't run yet.
+
+## Disease scope (current)
+- Only SLE and Sjögren's are in scope. Do not fetch or process MCTD, Inflammatory Myositis, or Antiphospholipid Syndrome data until both are complete — see `.claude/rules/data.md`.
 
 ## Misdiagnosis extraction
 - Keyword triggers: "initially diagnosed with", "misdiagnosed as", "previously diagnosed", "presenting diagnosis", "referred after", "prior diagnosis", "delayed diagnosis", "wrongly diagnosed".
