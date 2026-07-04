@@ -17,18 +17,15 @@ def load_jsonl(path: Path) -> list[dict]:
     return rows
 
 
-def main() -> int:
-    case_reports = load_jsonl(Path("integration/mock_case_reports.jsonl"))
-    figures = load_jsonl(Path("integration/mock_extracted_figures.jsonl"))
-
+def merge_records(case_reports: list[dict], figures: list[dict]) -> list[dict]:
     case_by_id = {r["pubmed_id"]: r for r in case_reports}
     figs_by_id = defaultdict(list)
     for f in figures:
         figs_by_id[f["pubmed_id"]].append(f)
 
     all_ids = sorted(set(case_by_id.keys()) | set(figs_by_id.keys()))
-    merged = []
     now = datetime.now(timezone.utc).isoformat()
+    merged = []
     for pid in all_ids:
         disease = None
         if pid in case_by_id:
@@ -44,6 +41,13 @@ def main() -> int:
                 "merged_at": now,
             }
         )
+    return merged
+
+
+def main() -> int:
+    case_reports = load_jsonl(Path("integration/mock_case_reports.jsonl"))
+    figures = load_jsonl(Path("integration/mock_extracted_figures.jsonl"))
+    merged = merge_records(case_reports, figures)
 
     out_path = Path("integration/merged_records.jsonl")
     with out_path.open("w", encoding="utf-8") as f:
