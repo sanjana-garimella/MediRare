@@ -121,21 +121,22 @@ Misdiagnosis  Research
 
 The active disease list is chosen by real PubMed misdiagnosis-focused literature volume, not by arbitrary selection. Pooled across all 12, that is roughly 2,885 misdiagnosis-focused case reports, versus 350 to 550 for any single disease alone, which is what makes fine-tuning a single general model on this data feasible.
 
-| Disease | Misdiagnosis-focused records in PubMed | Status |
+| Disease | Misdiagnosis-focused records in PubMed | What it is |
 |---|---|---|
-| Sarcoidosis | 783 | Active |
-| SLE | 564 | Active |
-| IgG4-related disease | 288 | Active |
-| Guillain-Barre syndrome | 280 | Active |
-| Granulomatosis with polyangiitis | 194 | Active |
-| Myasthenia gravis | 186 | Active |
-| Behcet's disease | 150 | Active |
-| Castleman disease | 143 | Active |
-| Neuromyelitis optica | 138 | Active |
-| Antiphospholipid Syndrome | 100 | Active |
-| Sjogren's Syndrome | 38 | Active (thin, kept for continuity with the project's original scope) |
-| Mixed Connective Tissue Disease | 21 | Active (thin, kept for continuity with the project's original scope) |
-| Inflammatory Myositis | 17 | Out of scope, too thin to include |
+| Sarcoidosis | 783 | Multisystem inflammatory disease causing granulomas, most often in the lungs and lymph nodes |
+| SLE | 564 | Chronic autoimmune disease that can affect skin, joints, kidneys, and other organs |
+| IgG4-related disease | 288 | Immune-mediated fibro-inflammatory condition causing tumor-like swelling in various organs |
+| Guillain-Barre syndrome | 280 | Acute autoimmune disorder attacking peripheral nerves, causing rapid-onset muscle weakness |
+| Granulomatosis with polyangiitis | 194 | Autoimmune vasculitis affecting small blood vessels, often in the lungs, sinuses, and kidneys |
+| Myasthenia gravis | 186 | Autoimmune neuromuscular disorder causing fluctuating muscle weakness |
+| Behcet's disease | 150 | Rare vasculitis causing recurrent mouth and genital ulcers and eye inflammation |
+| Castleman disease | 143 | Rare lymphoproliferative disorder involving abnormal lymph node overgrowth |
+| Neuromyelitis optica | 138 | Autoimmune disorder attacking the optic nerves and spinal cord |
+| Antiphospholipid Syndrome | 100 | Autoimmune clotting disorder causing blood clots and pregnancy complications |
+| Sjogren's Syndrome | 38 | Autoimmune disease attacking moisture-producing glands, causing dry eyes and mouth |
+| Mixed Connective Tissue Disease | 21 | Overlap autoimmune disease with features of lupus, scleroderma, and myositis |
+
+Inflammatory Myositis (autoimmune muscle inflammation causing progressive weakness) was considered but is out of scope: only 17 total records, too thin to include.
 
 ---
 
