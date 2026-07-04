@@ -1,14 +1,14 @@
 # MediRare
 
-Multimodal AI system for detecting misdiagnosis patterns in rare autoimmune diseases — combining NLP on case reports, computer vision on clinical figures, and LLM-based reasoning over the extracted knowledge.
+Multimodal AI system for detecting misdiagnosis patterns in rare diseases, combining NLP on case reports, computer vision on clinical figures, and LLM-based reasoning over the extracted knowledge.
 
 ---
 
 ## Problem
 
-Patients with Lupus, Sjögren's Syndrome, and MCTD wait an average of **6+ years** for a correct diagnosis. The signals that could have caught it earlier already exist in the published literature — inside figures, case reports, and clinical text — but nothing connects them systematically.
+Patients with rare diseases often wait years for a correct diagnosis. The signals that could have caught it earlier already exist in the published literature, inside figures, case reports, and clinical text, but nothing connects them systematically.
 
-MediRare builds that connection.
+MediRare builds that connection across 12 rare diseases, chosen by real PubMed misdiagnosis-focused literature volume: Sarcoidosis, Systemic Lupus Erythematosus (SLE), IgG4-related disease, Guillain-Barre syndrome, Granulomatosis with polyangiitis, Myasthenia gravis, Behcet's disease, Castleman disease, Neuromyelitis optica, Antiphospholipid Syndrome, Sjogren's Syndrome, and Mixed Connective Tissue Disease (MCTD).
 
 ---
 
@@ -177,13 +177,23 @@ Misdiagnosis  Research
 
 ## Disease Scope
 
-| Disease | Owner | Status |
+Active disease list is chosen by real PubMed misdiagnosis-focused literature volume (checked directly against PubMed's own index, not estimated), not by arbitrary selection. Pooled across all 12, that's roughly 2885 misdiagnosis-focused case reports, versus 350 to 550 for any single disease alone, which is what makes fine-tuning a single general model on this data feasible.
+
+| Disease | Misdiagnosis-focused records in PubMed | Status |
 |---|---|---|
-| Systemic Lupus Erythematosus | Core team | Active — end-to-end pipeline target |
-| Sjögren's Syndrome | Core team | Active — end-to-end pipeline target |
-| Mixed Connective Tissue Disease | Undergrads | **Out of scope** until SLE + Sjögren's are complete |
-| Inflammatory Myositis | Undergrads | **Out of scope** until SLE + Sjögren's are complete |
-| Antiphospholipid Syndrome | Undergrads | **Out of scope** until SLE + Sjögren's are complete |
+| Sarcoidosis | 783 | Active |
+| Systemic Lupus Erythematosus (SLE) | 564 | Active |
+| IgG4-related disease | 288 | Active |
+| Guillain-Barre syndrome | 280 | Active |
+| Granulomatosis with polyangiitis | 194 | Active |
+| Myasthenia gravis | 186 | Active |
+| Behcet's disease | 150 | Active |
+| Castleman disease | 143 | Active |
+| Neuromyelitis optica | 138 | Active |
+| Antiphospholipid Syndrome | 100 | Active |
+| Sjogren's Syndrome | 38 | Active (thin, kept for continuity with the project's original scope) |
+| Mixed Connective Tissue Disease | 21 | Active (thin, kept for continuity with the project's original scope) |
+| Inflammatory Myositis | 17 | Out of scope, too thin to include |
 
 ---
 

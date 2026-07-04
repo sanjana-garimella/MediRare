@@ -21,7 +21,9 @@ globs:
 - The `misdiagnosis_sequence` field must never be silently left as `[]` in final output — always note if extraction hasn't run yet.
 
 ## Disease scope (current)
-- Only SLE and Sjögren's are in scope. Do not fetch or process MCTD, Inflammatory Myositis, or Antiphospholipid Syndrome data until both are complete — see `.claude/rules/data.md`.
+- 12 active diseases, chosen by real PubMed misdiagnosis-focused literature volume: Sarcoidosis, SLE, IgG4-related disease, Guillain-Barre syndrome, Granulomatosis with polyangiitis, Myasthenia gravis, Behcet's disease, Castleman disease, Neuromyelitis optica, Antiphospholipid Syndrome, Sjogren's, MCTD. See `.claude/rules/data.md`.
+- Inflammatory Myositis is out of scope (too thin at 17 total records). Do not add diseases outside the active list without confirming with Sanjana first.
+- Fetched record counts vary hugely by disease (Sarcoidosis has 783 misdiagnosis-focused records in all of PubMed, Sjogren's has 38, MCTD has 21). This is a hard ceiling from the literature itself, not a fetch-tuning problem. Do not try to pad thin diseases with noisy general-query results without explicit confirmation.
 
 ## Misdiagnosis extraction
 - Keyword triggers: "initially diagnosed with", "misdiagnosed as", "previously diagnosed", "presenting diagnosis", "referred after", "prior diagnosis", "delayed diagnosis", "wrongly diagnosed".

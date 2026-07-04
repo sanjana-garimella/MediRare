@@ -19,6 +19,7 @@ globs:
 - Do not add a new schema file without updating `tests/test_schemas.py`.
 
 ## Disease scope
-- **Active (you own):** SLE, Sjögren's — build end-to-end pipeline for these.
-- **Out of scope until SLE + Sjögren's are complete:** MCTD, Inflammatory Myositis, Antiphospholipid Syndrome. Do not fetch, extract, or process data for these — not even opportunistically alongside SLE/Sjögren's work.
-- When adding a new disease (only once SLE + Sjögren's are done), always add: (1) entry in `DISEASE_TERMS` in `nlp/fetch_pubmed_case_reports.py`, (2) rows in `hpo_mapping_table.csv`, (3) section in `label_guide.md`.
+- **Active (12 diseases, chosen by real PubMed misdiagnosis-focused literature volume):** Sarcoidosis, SLE, IgG4-related disease, Guillain-Barre syndrome, Granulomatosis with polyangiitis, Myasthenia gravis, Behcet's disease, Castleman disease, Neuromyelitis optica, Antiphospholipid Syndrome, Sjogren's, MCTD.
+- **Out of scope:** Inflammatory Myositis (too thin, 17 total records, did not make the cut) and any disease not on the list above. Do not fetch, extract, or process data for diseases outside this list without confirming with Sanjana first.
+- Strategy: pool data across all 12 for training/fine-tuning a single model, evaluate per-disease. This is aimed at a HuggingFace model release plus a paper, not a per-disease pipeline.
+- When adding a new disease, always add: (1) entry in `DISEASE_TERMS` in `nlp/fetch_pubmed_case_reports.py`, (2) rows in `hpo_mapping_table.csv`, (3) section in `label_guide.md`.
