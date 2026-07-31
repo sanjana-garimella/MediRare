@@ -1,0 +1,21 @@
+{
+  "diseases": [
+    "SLE",
+    "MCTD",
+    "Sjogren's"
+  ],
+  "models": [
+    {
+      "model": "meditron:7b",
+      "role": "medical",
+      "score_over_10": 7,
+      "total_elapsed_s": 63.3,
+      "failure_modes": [
+        "B1",
+        "B2",
+        "B3"
+      ],
+      "run_path": "experiments/llm_bakeoff/runs/meditron_7b.json"
+    }
+  ]
+}

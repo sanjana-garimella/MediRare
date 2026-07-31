@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from integration.merge import load_jsonl, merge_records
+from integration.merge import flatten_figure_metadata, load_jsonl, merge_records
+from schemas.extracted_figure import ExtractedFigure
 
 
 def test_load_jsonl_reads_mock_case_reports():
@@ -64,3 +65,51 @@ def test_merge_records_both_present_merges_correctly():
     record = merged["11111111"]
     assert record["case_report"] is not None
     assert len(record["figures"]) == 2
+
+
+def test_merge_preserves_same_pmid_for_multiple_diseases():
+    reports = [
+        {"pubmed_id": 123, "disease": "SLE", "title": "A"},
+        {"pubmed_id": "123", "disease": "Sjogrens", "title": "B"},
+    ]
+    figures = [{"pubmed_id": "123", "disease": "SLE", "figure_id": "f1"}]
+    merged = merge_records(reports, figures)
+    assert {(row["disease"], row["pubmed_id"]) for row in merged} == {
+        ("SLE", "123"),
+        ("Sjogrens", "123"),
+    }
+    by_disease = {row["disease"]: row for row in merged}
+    assert len(by_disease["SLE"]["figures"]) == 1
+    assert by_disease["Sjogrens"]["figures"] == []
+
+
+def test_unscoped_figure_is_not_duplicated_across_ambiguous_diseases():
+    reports = [
+        {"pubmed_id": "123", "disease": "SLE"},
+        {"pubmed_id": "123", "disease": "MCTD"},
+    ]
+    figure = {"pubmed_id": "123", "disease": "", "figure_index": 1}
+    merged = merge_records(reports, [figure])
+    scoped = [row for row in merged if row["disease"]]
+    unscoped = [row for row in merged if not row["disease"]]
+    assert all(row["figures"] == [] for row in scoped)
+    assert len(unscoped) == 1
+    assert unscoped[0]["figures"] == [figure]
+
+
+def test_real_figure_metadata_maps_to_schema():
+    flat = flatten_figure_metadata([{
+        "pubmed_id": "42",
+        "disease": "SLE",
+        "pmc_id": "PMC42",
+        "figures": [{
+            "label": "Figure 3",
+            "img_ref": "image-3.jpg",
+            "caption": "A scan",
+            "figure_type": "imaging",
+        }],
+    }])
+    validated = ExtractedFigure.model_validate(flat[0])
+    assert validated.figure_index == 3
+    assert validated.file_path == "image-3.jpg"
+    assert validated.source_pdf == "PMC42"

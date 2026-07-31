@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -63,12 +64,37 @@ def _iso_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def _clean_str(value: object) -> str:
+    """
+    Coerce a pandas record field to a stripped string, treating None AND
+    float NaN as empty.
+
+    df.to_dict(orient="records") represents any missing title/abstract as
+    float('nan') (pandas' missing-value marker for object columns with mixed
+    fill), not None — and `value or ""` does NOT catch that, because
+    float('nan') is truthy in Python. Real PubMed records legitimately lack
+    an abstract (editorials, old pre-abstract-era entries, some case report
+    letters), so this path is reachable in production, not just theoretical.
+    """
+    if value is None:
+        return ""
+    if isinstance(value, float) and math.isnan(value):
+        return ""
+    return str(value).strip()
+
+
 def fetch_case_reports(term: str, retmax: int, disease: str) -> tuple[list[CaseReport], list[ET.Element]]:
     """
     Query PubMed via paperscraper's get_pubmed_papers (pymed -> NCBI
     E-utilities under the hood), passing `term` through as raw PubMed query
     syntax unchanged. Returns parsed CaseReport rows plus each record's raw
     PubmedArticle XML element (for archival to data/nlp/raw/).
+
+    Deduplicates by pubmed_id (first occurrence wins): downstream
+    integration/merge.py treats (disease, pubmed_id) as a unique key and
+    raises on a duplicate, so a repeated PMID here — which can happen when a
+    query matches an article on multiple indexed fields — must not reach the
+    output file.
     """
     df = get_pubmed_papers(
         term, fields=["pubmed_id", "title", "abstract", "xml"], max_results=retmax
@@ -77,16 +103,18 @@ def fetch_case_reports(term: str, retmax: int, disease: str) -> tuple[list[CaseR
 
     rows: list[CaseReport] = []
     xml_elements: list[ET.Element] = []
+    seen_pmids: set[str] = set()
     for row in df.to_dict(orient="records"):
-        pubmed_id = str(row["pubmed_id"]).strip().split("\n")[0]
-        if not pubmed_id:
+        pubmed_id = _clean_str(row.get("pubmed_id")).split("\n")[0]
+        if not pubmed_id or pubmed_id in seen_pmids:
             continue
+        seen_pmids.add(pubmed_id)
         rows.append(
             CaseReport(
                 pubmed_id=pubmed_id,
                 disease=disease,
-                title=(row.get("title") or "").strip(),
-                abstract=(row.get("abstract") or "").strip(),
+                title=_clean_str(row.get("title")),
+                abstract=_clean_str(row.get("abstract")),
                 misdiagnosis_sequence=[],
                 extracted_at=extracted_at,
             )

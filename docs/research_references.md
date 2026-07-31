@@ -56,21 +56,43 @@ regex, and `cv/fetch_pmc_figures.py` beyond caption keywords. See
   Notes the same failure mode as our regex: struggles with implicit phrasing
   that avoids canonical trigger words; needs full text, not just abstracts.
 
-## Current extractor baseline (for comparison)
+## Extractor evaluation status
 
-`nlp/eval_extractor.py` on 100 SLE records vs.
-`data/biomedical/sle_misdiagnosis_groundtruth.csv`:
-precision 0.88, recall 0.22, F1 0.35. High precision / low recall — matches
-the failure mode called out in the JMIR paper above.
+Historical values such as 0.88/0.22/0.35 and 0.83/0.40/0.54 came from older
+extractor/artifact combinations and must not be reported as current.
 
-**Update (2026-07-03):** after regex fixes (word-boundary bugs in
-`_filter_target`/`_NOISE_START`, a passive-voice pattern, "suspicious of X"
-patterns) plus a same-sentence-constrained gazetteer built from the SLE
-mimickers reference above: **precision 0.83, recall 0.40, F1 0.54.** Recall
-nearly doubled at a ~5-point precision cost. See `nlp/extract_misdiagnosis.py`
-for the gazetteer implementation and why the unconstrained version (matching
-mimic terms anywhere in the abstract) was rejected — it matched generic
-differential-diagnosis boilerplate unrelated to the actual patient.
+On the current 100-record SLE artifact, document-level precision/recall/F1 are
+0.73/0.51/0.60 and normalized entity precision/recall/F1 are 0.43/0.34/0.38.
+Accuracy (0.57) remains below the majority baseline (0.63). These are internal
+comparisons against AI-proposed, non-clinician labels—not clinical validation.
+Re-run `nlp/eval_extractor.py` after any extraction change rather than copying
+these values.
+
+The Sjögren's/MCTD CSVs are partly extractor/keyword-derived; their scores are
+circular parsing diagnostics and cannot estimate extractor accuracy.
+
+**2026-07-28 grounding-fix note:** a rigorous audit found three classes of
+false positive in `nlp/extract_misdiagnosis.py`: (1) entities extracted from
+a case report whose *own target disease* was later explicitly excluded
+(e.g. PMID 42112145 — the disease field said SLE, but the abstract's real
+diagnosis was IgG4-related disease and SLE was one of several differentials
+ruled out); (2) records where the target disease was only ever name-dropped
+inside a generic textbook differential list, never affirmed as this
+patient's own diagnosis (PMID 41939103 — a Sjögren's case that happens to
+list "systemic lupus erythematosus" as one of several "common causes of
+pleural effusion"); (3) stale/legacy entities never literally grounded in
+the abstract text at all (PMID 41996261 — "idmcd", which doesn't appear
+anywhere in the source text). All three are now checked on every extraction
+run — including previously-preserved legacy/unreviewed sequences, which are
+re-validated rather than trusted indefinitely — via
+`_target_disease_excluded`, `_target_disease_unconfirmed`, and
+`_ground_entity` in `nlp/extract_misdiagnosis.py`. This raised SLE precision
+(0.66→0.73, false positives 18→12) at a moderate recall cost (0.56→0.51),
+and reduced Sjögren's/MCTD recall more substantially (0.73→0.53,
+0.78→0.50) because part of those two circular ground-truth CSVs encoded the
+very entities this fix removes as "true positives." That recall drop is
+evidence the fix is working, not a regression — see the circularity caveat
+above.
 
 ## Computer vision — figure modality classification
 

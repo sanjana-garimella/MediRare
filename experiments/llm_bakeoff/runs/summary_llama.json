@@ -1,0 +1,19 @@
+{
+  "diseases": [
+    "SLE",
+    "MCTD",
+    "Sjogren's"
+  ],
+  "models": [
+    {
+      "model": "llama3.1:8b",
+      "role": "generator",
+      "score_over_10": 9,
+      "total_elapsed_s": 27.0,
+      "failure_modes": [
+        "B1"
+      ],
+      "run_path": "experiments/llm_bakeoff/runs/llama3.1_8b.json"
+    }
+  ]
+}

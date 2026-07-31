@@ -9,7 +9,12 @@ globs:
 # Data and schema rules
 
 ## Biomedical data
-- `annotated_cases.csv` is the gold-standard hand-annotated set. Do not overwrite it with synthetic or auto-extracted data — append only, with human review.
+- `annotated_cases.csv` contains synthetic placeholder fixtures, not
+  expert-annotated gold evidence. Do not cite it as corroboration for real
+  PubMed findings or overwrite it with auto-extracted data.
+- The `*_misdiagnosis_groundtruth.csv` files are AI-proposed/internal labels
+  until clinician review is recorded; keyword-hit-derived labels are circular
+  for validating the same parser.
 - `hpo_mapping_table.csv` must include all three columns: `hpo_id`, `hpo_term`, `phenotype_category`. Do not add a disease without HPO entries.
 - `label_guide.md` is the annotation specification. Update it when adding a new disease.
 

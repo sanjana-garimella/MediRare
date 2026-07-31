@@ -9,8 +9,12 @@ __pycache__/
 
 # Generated data outputs (Week 1 scripts create these locally)
 data/nlp/raw/
+data/nlp/processed/.backup-*/
 data/cv/pdfs/
 data/cv/figures/
+data/rag/chunks.jsonl
+data/rag/index/
+data/graph/
 integration/merged_records.jsonl
 
 # Added by code-review-graph
@@ -20,5 +24,9 @@ integration/merged_records.jsonl
 .claude/logs/
 .claude/*.bak
 
-# Cursor-targeted skill copies (byproduct of skills installer, not used by Claude Code)
-.agents/
+# Portable hand-written agent contract is tracked; generated skill copies are not.
+.agents/*
+!.agents/AGENTS.md
+!.agents/rules/
+.agents/rules/*
+!.agents/rules/agent.md

@@ -1,0 +1,22 @@
+pubmed_id,has_misdiagnosis,true_wrong_diagnosis,rationale,review_status
+42371446,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+41996261,1,idmcd,Extractor populated misdiagnosis_sequence=['idmcd'],AI-proposed
+41399084,1,systemic sclerosis,Extractor populated misdiagnosis_sequence=['systemic sclerosis'],AI-proposed
+41356082,1,rheumatoid arthritis; pulmonary tb,"Extractor populated misdiagnosis_sequence=['rheumatoid arthritis', 'pulmonary tb']",AI-proposed
+40476451,1,pin palsy,Extractor populated misdiagnosis_sequence=['pin palsy'],AI-proposed
+40205717,1,erythema multiforme,Extractor populated misdiagnosis_sequence=['erythema multiforme'],AI-proposed
+39415142,1,optic neuritis in the right eye at another hospital,Extractor populated misdiagnosis_sequence=['optic neuritis in the right eye at another hospital'],AI-proposed
+39093747,1,light chain restricted expression,Extractor populated misdiagnosis_sequence=['light chain restricted expression'],AI-proposed
+38903494,1,,Misdiagnosis keyword present in abstract; entity not cleanly extracted,AI-proposed
+37153486,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+37102006,1,cholecystitis,Extractor populated misdiagnosis_sequence=['cholecystitis'],AI-proposed
+35864917,1,neuromyelitis optica spectrum disorder; nmosd; multiple sclerosis,"Extractor populated misdiagnosis_sequence=['neuromyelitis optica spectrum disorder', 'nmosd', 'multiple sclerosis']",AI-proposed
+35505737,1,scabies,Extractor populated misdiagnosis_sequence=['scabies'],AI-proposed
+34217479,1,macular hole,Extractor populated misdiagnosis_sequence=['macular hole'],AI-proposed
+23409733,1,,Misdiagnosis keyword present in abstract; entity not cleanly extracted,AI-proposed
+21102281,1,csd; ankylosing spondylitis,"Extractor populated misdiagnosis_sequence=['csd', 'ankylosing spondylitis']",AI-proposed
+18337264,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+14755959,1,dermatomyositis,Extractor populated misdiagnosis_sequence=['dermatomyositis'],AI-proposed
+11828219,1,mycetoma,Extractor populated misdiagnosis_sequence=['mycetoma'],AI-proposed
+9396373,1,only by arthritis,Extractor populated misdiagnosis_sequence=['only by arthritis'],AI-proposed
+8146727,1,sjögren syndrome; systemic sclerosis,"Extractor populated misdiagnosis_sequence=['sjögren syndrome', 'systemic sclerosis']",AI-proposed

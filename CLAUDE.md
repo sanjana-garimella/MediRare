@@ -4,6 +4,15 @@
 Multimodal AI system to detect misdiagnosis patterns in rare autoimmune diseases.
 Pipeline: PubMed case reports (NLP) + figure extraction (CV) → misdiagnosis knowledge graph → LLM reasoning agent → per-disease research reports.
 
+## LLM serving (do not use vLLM)
+Locked model choice (`experiments/llm_bakeoff/RESULTS.md`): Ollama via plain HTTP.
+The 10-item run is citation/abstention smoke testing, not a discriminating benchmark.
+- Primary: `qwen2.5:14b`
+- Backup: `llama3.1:8b`
+- `--verify` cross-model consistency check: `llama3.1:8b` (the backup model, reused because it's independent of the primary — not medical verification, still experimental)
+- Parked: `meditron:7b` (tried as the `--verify` model; empirically never returns a parseable grade through Ollama in this deployment — echoes the prompt or hallucinates unrelated content. Not used by any code path.), `qwen3:32b` (needs `think: false` if reused)
+Rules: `.claude/rules/agent.md` (mirrored in `.agents/`). Index: `.agents/AGENTS.md`.
+
 ## Current focus: broad multi-disease pipeline, targeting HuggingFace model release + paper
 Active disease list (12, chosen by real PubMed misdiagnosis-focused literature
 volume, not arbitrarily): Sarcoidosis, SLE, IgG4-related disease, Guillain-Barre
@@ -25,7 +34,7 @@ did not make the volume-based cut).
 - `nlp/`                → PubMed fetcher, future misdiagnosis extractor
 - `cv/`                 → PDF figure extraction (PyMuPDF)
 - `data/nlp/processed/` → real PubMed case reports (JSONL)
-- `data/biomedical/`    → gold annotated cases, HPO mappings, label guide
+- `data/biomedical/`    → internal/AI-proposed labels, synthetic fixtures, HPO mappings, label guide
 - `schemas/`            → data contracts for all pipeline outputs
 - `integration/`        → merger + mock stubs
 - `demo/`               → Streamlit app
@@ -34,11 +43,12 @@ did not make the volume-based cut).
 | Asset | Location | Status |
 |---|---|---|
 | 50 PubMed records × 3 diseases | `data/nlp/processed/*.jsonl` | Fetched, no extraction yet |
-| 10 gold annotated cases | `data/biomedical/annotated_cases.csv` | Hand-crafted, do not overwrite |
+| 10 synthetic cases | `data/biomedical/annotated_cases.csv` | Placeholder fixtures, not clinical evidence; do not overwrite |
 | HPO mappings (31 rows) | `data/biomedical/hpo_mapping_table.csv` | SLE, Sjögren's, MCTD |
 | Label guide | `data/biomedical/label_guide.md` | Annotation rules |
 
-**Key gap**: `misdiagnosis_sequence` is `[]` for all 150 real records — extraction NLP is #1 next step.
+`misdiagnosis_sequence` is now populated for a subset of real records. Default
+reruns preserve stronger existing evidence and write processed JSONL atomically.
 **Sjögren's**: 13/50 records are noise — fix search term to `"primary Sjögren's syndrome" AND "case report"`.
 
 ## Misdiagnosis extraction keywords
@@ -64,6 +74,12 @@ did not make the volume-based cut).
 - Don't re-read files already read this session.
 - Don't re-explore project structure unless asked.
 - Edit existing files; don't create new ones without reason.
+
+## Agent config layout
+- `.agents/` — portable AGENTS.md, mirrored rules/agents/skills (Cursor + cross-tool)
+- `.claude/` — Claude Code rules, skills, subagents, hooks
+- Keep `.agents/rules/agent.md` and `.claude/rules/agent.md` in sync when changing LLM/RAG policy
+
 
 <!-- code-review-graph MCP tools -->
 ## MCP Tools: code-review-graph

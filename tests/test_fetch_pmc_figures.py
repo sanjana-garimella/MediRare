@@ -37,6 +37,19 @@ def test_classify_figure_other_no_keyword_match():
     assert classify_figure("Small subcentimeter prevascular lymph nodes") == "other"
 
 
+def test_classify_figure_scanty_is_not_imaging():
+    # Regression: "scan\w*" previously matched "scanty"/"scant" as imaging.
+    assert classify_figure("Scanty lymphocytic infiltrate in the dermis") == "other"
+    assert classify_figure("Scant inflammatory cells around vessels") == "other"
+    assert classify_figure("Scanning electron micrograph of the deposit") == "other"
+
+
+def test_classify_figure_scan_inflections_still_imaging():
+    assert classify_figure("Bone scan demonstrating uptake") == "imaging"
+    assert classify_figure("Serial CT scans over 3 months") == "imaging"
+    assert classify_figure("The lesion was scanned with MRI") == "imaging"
+
+
 _S3_MULTI_VERSION_XML = b"""<?xml version="1.0" encoding="UTF-8"?>
 <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
   <Name>pmc-oa-opendata</Name>
@@ -52,6 +65,17 @@ _ARTICLE_XML = b"""<?xml version="1.0"?>
 <label>Figure 1</label>
 <caption><p>CT scan showing bilateral pleural effusion.</p></caption>
 <graphic xlink:href="fig1.jpg"/>
+</fig>
+</article>
+</pmc-articleset>"""
+
+_ARTICLE_XML_BARE_CAPTION = b"""<?xml version="1.0"?>
+<pmc-articleset>
+<article xmlns:xlink="http://www.w3.org/1999/xlink">
+<fig>
+<label>Figure 2</label>
+<caption>Direct caption text without a p wrapper showing CT findings.</caption>
+<graphic xlink:href="fig2.jpg"/>
 </fig>
 </article>
 </pmc-articleset>"""
@@ -80,6 +104,16 @@ def test_fetch_pmc_figures_parses_fig_elements():
             "figure_type": "imaging",
         }
     ]
+
+
+def test_fetch_pmc_figures_parses_bare_caption_text():
+    # Captions that are bare PCDATA under <caption> (no <p>/<title>) must
+    # still be extracted — ElementTree iteration over children misses them.
+    with patch("cv.fetch_pmc_figures._get", return_value=_ARTICLE_XML_BARE_CAPTION):
+        figures = fetch_pmc_figures("PMC13242597")
+    assert len(figures) == 1
+    assert figures[0]["caption"] == "Direct caption text without a p wrapper showing CT findings."
+    assert figures[0]["figure_type"] == "imaging"
 
 
 def test_fetch_pmc_figures_returns_empty_list_on_bad_xml():

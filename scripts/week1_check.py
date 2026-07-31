@@ -41,8 +41,8 @@ ROLE_FILES: dict[str, list[str]] = {
     ],
     "biomedical": [
         "data/biomedical/label_guide.md",
-        "data/biomedical/annotations.csv",
-        "data/biomedical/hpo_mapping.csv",
+        "data/biomedical/annotated_cases.csv",
+        "data/biomedical/hpo_mapping_table.csv",
         "docs/week1/biomedical.md",
     ],
     "backend": [
@@ -64,13 +64,29 @@ ROLE_FILES: dict[str, list[str]] = {
 
 
 EXPECTED_CSV_HEADERS: dict[str, str] = {
-    "data/biomedical/annotations.csv": "pubmed_id,final_diagnosis,misdiagnoses_before_correct,key_symptoms,notes",
-    "data/biomedical/hpo_mapping.csv": "symptom_phrase,hpo_id,hpo_label,disease,notes",
+    "data/biomedical/annotated_cases.csv": (
+        "pubmed_id,disease,title,abstract,misdiagnosis_sequence,extracted_at,"
+        "annotation_confidence,annotator_notes"
+    ),
+    "data/biomedical/hpo_mapping_table.csv": (
+        "disease,hpo_id,hpo_term,phenotype_category,clinical_relevance,notes"
+    ),
 }
 
 
 def run(cmd: list[str]) -> tuple[int, str]:
-    p = subprocess.run(cmd, cwd=str(REPO_ROOT), capture_output=True, text=True)
+    import os
+
+    env = os.environ.copy()
+    # Ensure `python -m schemas.validate_jsonl` can import the package even
+    # when the caller has no PYTHONPATH set (common for a fresh shell).
+    existing = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = (
+        str(REPO_ROOT) if not existing else f"{REPO_ROOT}{os.pathsep}{existing}"
+    )
+    p = subprocess.run(
+        cmd, cwd=str(REPO_ROOT), capture_output=True, text=True, env=env
+    )
     out = (p.stdout or "") + (p.stderr or "")
     return p.returncode, out.strip()
 
@@ -160,7 +176,13 @@ def maybe_validate_outputs(role: str) -> int:
         if check_jsonl_parses(p) != 0:
             return fail(f"JSONL is not valid JSONL: {rel}")
         if validator.exists():
-            code, out = run([sys.executable, "schemas/validate_jsonl.py", rel, model])
+            # Must use module form: running the script file directly puts
+            # schemas/ on sys.path, so `from schemas.case_report import ...`
+            # fails with ModuleNotFoundError unless PYTHONPATH already
+            # happens to include the repo root.
+            code, out = run([
+                sys.executable, "-m", "schemas.validate_jsonl", rel, model,
+            ])
             if code != 0:
                 print(out)
                 return fail(f"Schema validation failed for {rel} as {model}")

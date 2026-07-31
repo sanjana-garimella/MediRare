@@ -1,0 +1,40 @@
+pubmed_id,has_misdiagnosis,true_wrong_diagnosis,rationale,review_status
+42488623,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+41939103,1,pneumonia; copd exacerbation,"Extractor populated misdiagnosis_sequence=['pneumonia', 'copd exacerbation']",AI-proposed
+41426812,1,,Misdiagnosis keyword present in abstract; entity not cleanly extracted,AI-proposed
+41039282,1,,Misdiagnosis keyword present in abstract; entity not cleanly extracted,AI-proposed
+40952810,1,,Misdiagnosis keyword present in abstract; entity not cleanly extracted,AI-proposed
+40951006,1,bullous emphysema,Extractor populated misdiagnosis_sequence=['bullous emphysema'],AI-proposed
+40764139,1,cryptogenic organizing pneumonia; fungal infections; tuberculosis; vasculitis; tumor pathologies,"Extractor populated misdiagnosis_sequence=['cryptogenic organizing pneumonia', 'fungal infections', 'tuberculosis', 'vasculitis', 'tumor pathologies']",AI-proposed
+40491148,1,,Misdiagnosis keyword present in abstract; entity not cleanly extracted,AI-proposed
+37501055,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+37481699,1,severe hypokalemia; for limb weakness symptoms,"Extractor populated misdiagnosis_sequence=['severe hypokalemia', 'for limb weakness symptoms']",AI-proposed
+36384806,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+35761497,1,creutzfeldt-jakob disease,Extractor populated misdiagnosis_sequence=['creutzfeldt-jakob disease'],AI-proposed
+35211561,1,hyperplastic anemia,Extractor populated misdiagnosis_sequence=['hyperplastic anemia'],AI-proposed
+34393170,1,tuberculosis pleurisy,Extractor populated misdiagnosis_sequence=['tuberculosis pleurisy'],AI-proposed
+34093403,1,primary degenerative dementia,Extractor populated misdiagnosis_sequence=['primary degenerative dementia'],AI-proposed
+32003472,1,,Misdiagnosis keyword present in abstract; entity not cleanly extracted,AI-proposed
+30410805,1,hypokalemic periodic paralysis,Extractor populated misdiagnosis_sequence=['hypokalemic periodic paralysis'],AI-proposed
+28577018,1,nephrogenic diabetes insipidus,Extractor populated misdiagnosis_sequence=['nephrogenic diabetes insipidus'],AI-proposed
+29901009,1,primary sjögren's syndrome,"Extractor populated misdiagnosis_sequence=[""primary sjögren's syndrome""]",AI-proposed
+27562110,1,,Misdiagnosis keyword present in abstract; entity not cleanly extracted,AI-proposed
+24885364,1,idiopathic,Extractor populated misdiagnosis_sequence=['idiopathic'],AI-proposed
+24252015,1,igg4-related disease,Extractor populated misdiagnosis_sequence=['igg4-related disease'],AI-proposed
+24119527,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+22679320,1,primary sjögren's syndrome,"Extractor populated misdiagnosis_sequence=[""primary sjögren's syndrome""]",AI-proposed
+20883374,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+20863997,1,tuberculosis,Extractor populated misdiagnosis_sequence=['tuberculosis'],AI-proposed
+20084442,1,limited systemic sclerosis,Extractor populated misdiagnosis_sequence=['limited systemic sclerosis'],AI-proposed
+19701715,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+19326165,1,rheumatoid arthritis,Extractor populated misdiagnosis_sequence=['rheumatoid arthritis'],AI-proposed
+19180009,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+15953879,1,multiple myeloma,Extractor populated misdiagnosis_sequence=['multiple myeloma'],AI-proposed
+12167735,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+11965177,1,vascular-like form; infectious-like form,"Extractor populated misdiagnosis_sequence=['vascular-like form', 'infectious-like form']",AI-proposed
+10685456,1,boop,Extractor populated misdiagnosis_sequence=['boop'],AI-proposed
+10665745,0,,No misdiagnosis keyword or extracted sequence in abstract,AI-proposed
+9868312,1,multiple sclerosis,Extractor populated misdiagnosis_sequence=['multiple sclerosis'],AI-proposed
+8538072,1,multiple sclerosis,Extractor populated misdiagnosis_sequence=['multiple sclerosis'],AI-proposed
+2590099,1,multiple sclerosis,Extractor populated misdiagnosis_sequence=['multiple sclerosis'],AI-proposed
+3355252,1,having primary sjögren's syndrome,"Extractor populated misdiagnosis_sequence=[""having primary sjögren's syndrome""]",AI-proposed

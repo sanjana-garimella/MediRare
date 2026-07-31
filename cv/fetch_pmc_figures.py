@@ -79,8 +79,14 @@ def _iso_now() -> str:
 # word boundary immediately following "echocardiogra", which never happens
 # since real words continue "...phy"/"...m". That silently dropped the single
 # most common imaging word in these case reports (echocardiography).
+#
+# "scan" is deliberately NOT given the \w* treatment: unlike the stems above,
+# \w* after "scan" also swallows unrelated words that happen to start with it
+# ("scanty lymphocytic infiltrate", "scant inflammatory cells", "scanning
+# electron micrograph" — all histology/quantity language, not a scan modality).
+# Enumerate the real inflections (scan/scans/scanned) instead.
 _FIGURE_TYPE_RULES = [
-    ("imaging", r"\b(?:CT|MRI|ultrasound|radiograph\w*|X-ray|PET|scan\w*|contrast-enhanced|sonograph\w*|echocardiogra\w*|angiogra\w*)\b"),
+    ("imaging", r"\b(?:CT|MRI|ultrasound|radiograph\w*|X-ray|PET|(?:scans?|scanned)|contrast-enhanced|sonograph\w*|echocardiogra\w*|angiogra\w*)\b"),
     # "histopatholog\w*" is separate from "histolog\w*": "histopathology" does
     # NOT contain the substring "histolog" ("histo" + "pathology", not
     # "histo" + "logy"), so it silently fell through to the rash_image check
@@ -137,7 +143,11 @@ def fetch_pmc_figures(pmcid: str) -> list[dict]:
         caption_el = fig.find("caption")
         caption = ""
         if caption_el is not None:
-            caption = " ".join("".join(p.itertext()).strip() for p in caption_el)
+            # itertext() walks the whole subtree, so this also picks up
+            # captions that are bare PCDATA directly under <caption> with no
+            # <title>/<p> wrapper — iterating only caption_el's immediate
+            # children (the previous approach) silently dropped those entirely.
+            caption = " ".join(caption_el.itertext())
             caption = re.sub(r"\s+", " ", caption).strip()
         graphic = fig.find(".//graphic")
         img_ref = ""

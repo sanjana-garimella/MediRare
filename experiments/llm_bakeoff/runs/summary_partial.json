@@ -1,0 +1,17 @@
+{
+  "diseases": [
+    "SLE",
+    "MCTD",
+    "Sjogren's"
+  ],
+  "models": [
+    {
+      "model": "qwen2.5:14b",
+      "role": "generator",
+      "score_over_10": 10,
+      "total_elapsed_s": 6415.6,
+      "failure_modes": [],
+      "run_path": "experiments/llm_bakeoff/runs/qwen2.5_14b.json"
+    }
+  ]
+}

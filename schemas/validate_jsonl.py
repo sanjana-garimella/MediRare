@@ -1,8 +1,14 @@
 """
 Validate a JSONL file against one of the Pydantic models.
 
-Usage:
-  python schemas/validate_jsonl.py path/to/file.jsonl CaseReport
+Usage (from the repo root, with PYTHONPATH=. or an activated venv that
+installs the package as editable — the form used by scripts/e2e.sh):
+
+  PYTHONPATH=. python -m schemas.validate_jsonl path/to/file.jsonl CaseReport
+
+Running the file directly as ``python schemas/validate_jsonl.py ...`` fails
+with ModuleNotFoundError unless PYTHONPATH already includes the repo root,
+because the script's directory (schemas/) is what lands on sys.path.
 """
 
 from __future__ import annotations
@@ -24,7 +30,7 @@ MODELS = {
 
 def main() -> int:
     if len(sys.argv) != 3:
-        print("Usage: python schemas/validate_jsonl.py <path> <ModelName>")
+        print("Usage: python -m schemas.validate_jsonl <path> <ModelName>")
         print("ModelName: CaseReport | ExtractedFigure | MergedRecord")
         return 2
 

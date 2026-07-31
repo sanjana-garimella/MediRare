@@ -1,0 +1,174 @@
+{
+  "diseases": [
+    "SLE",
+    "MCTD",
+    "Sjogren's"
+  ],
+  "system": "You are MediRare's grounded RAG assistant. Answer ONLY from the provided chunks. Every sentence MUST end with a citation like [chunk_id] using an id from the provided set. If the chunks do not support an answer, reply with exactly: INSUFFICIENT_EVIDENCE Do not use outside medical knowledge.",
+  "items": [
+    {
+      "id": "A1",
+      "expect": "answer",
+      "query": "What infectious disease is often incorrectly attributed when SLE presents with pleural effusion in endemic regions?",
+      "chunks": [
+        {
+          "chunk_id": "sle_42367351_c1",
+          "disease": "SLE",
+          "pubmed_id": "42367351",
+          "text": "This chunk from SLE case report 42367351 describes TB mimic of pleural SLE. BACKGROUND: Systemic lupus erythematosus (SLE) is a multisystem autoimmune disease with diverse clinical manifestations that may mimic infectious conditions, particularly in tuberculosis-endemic regions. Pleural effusion and respiratory symptoms are often attributed to tuberculosis, leading to delayed recognition of autoimmune disease. Neuropsychiatric involvement represents a severe manifestation that may be under recognized in low-resource settings where access to specialized investigations is limited."
+        }
+      ],
+      "note": "TB mimic \u2014 single chunk"
+    },
+    {
+      "id": "A2",
+      "expect": "answer",
+      "query": "Which malignancy initially mimicked SLE with bone marrow infiltration in the reported elderly female case?",
+      "chunks": [
+        {
+          "chunk_id": "sle_42287064_c1",
+          "disease": "SLE",
+          "pubmed_id": "42287064",
+          "text": "This chunk from SLE case report 42287064 describes lymphoma mimicking SLE. Systemic lupus erythematosus (SLE) and lymphoma are two different diseases. However, they might mimic each other sometimes. Here, we reported a case of bone marrow infiltration as initial manifestation of large B-cell lymphoma that mimiced SLE."
+        }
+      ],
+      "note": "lymphoma mimic"
+    },
+    {
+      "id": "A3",
+      "expect": "answer",
+      "query": "What potentially fatal syndrome can be the first manifestation of SLE and is frequently misdiagnosed?",
+      "chunks": [
+        {
+          "chunk_id": "sle_42182598_c1",
+          "disease": "SLE",
+          "pubmed_id": "42182598",
+          "text": "This chunk from SLE case report 42182598 describes HLH as first SLE presentation. Hemophagocytic lymphohistiocytosis secondary to systemic lupus erythematosus (SLE) is a potentially fatal condition that is frequently misdiagnosed, particularly when its occurrence is the first manifestation of SLE. Diagnosis is often delayed due to overlapping clinical and laboratory findings with infections and autoimmune diseases. We report a case of a young, healthy woman with hemophagocytic lymphohistiocytosis as the first manifestation of SLE."
+        }
+      ],
+      "note": "HLH"
+    },
+    {
+      "id": "A4",
+      "expect": "answer",
+      "query": "In the MCTD lymphadenopathy case, what disease entity must be differentiated from autoimmune reactive nodes?",
+      "chunks": [
+        {
+          "chunk_id": "mctd_41996261_c1",
+          "disease": "MCTD",
+          "pubmed_id": "41996261",
+          "text": "This chunk from MCTD case report 41996261 describes Castleman-like nodes in MCTD. Differentiating reactive lymphadenopathies in the context of autoimmune disease from Idiopathic Multicentric Castleman Disease (iMCD) poses a significant diagnostic challenge. Castleman-like histological features have been described in various autoimmune disorders, necessitating a strict and comprehensive integration of clinical and laboratory findings to reach the correct diagnosis. Although the Castleman Disease Collaborative Network (CDCN) consensus guidelines list several autoimmune conditions as exclusion criteria for an iMCD diagnosis, mixed connective tissue disease (MCTD) is not currently among them."
+        }
+      ],
+      "note": "iMCD vs MCTD"
+    },
+    {
+      "id": "B1",
+      "expect": "abstain",
+      "query": "What is the five-year survival rate for Castleman disease in pediatric cohorts in Japan?",
+      "chunks": [
+        {
+          "chunk_id": "sle_42367351_c1",
+          "disease": "SLE",
+          "pubmed_id": "42367351",
+          "text": "This chunk from SLE case report 42367351 describes TB mimic of pleural SLE. BACKGROUND: Systemic lupus erythematosus (SLE) is a multisystem autoimmune disease with diverse clinical manifestations that may mimic infectious conditions, particularly in tuberculosis-endemic regions. Pleural effusion and respiratory symptoms are often attributed to tuberculosis, leading to delayed recognition of autoimmune disease. Neuropsychiatric involvement represents a severe manifestation that may be under recognized in low-resource settings where access to specialized investigations is limited."
+        },
+        {
+          "chunk_id": "sle_42287064_c1",
+          "disease": "SLE",
+          "pubmed_id": "42287064",
+          "text": "This chunk from SLE case report 42287064 describes lymphoma mimicking SLE. Systemic lupus erythematosus (SLE) and lymphoma are two different diseases. However, they might mimic each other sometimes. Here, we reported a case of bone marrow infiltration as initial manifestation of large B-cell lymphoma that mimiced SLE."
+        }
+      ],
+      "note": "stats not in chunks"
+    },
+    {
+      "id": "B2",
+      "expect": "abstain",
+      "query": "Which anti-Ro/SSA titer cutoff confirms primary Sjogren diagnosis in this evidence?",
+      "chunks": [
+        {
+          "chunk_id": "mctd_41399084_c1",
+          "disease": "MCTD",
+          "pubmed_id": "41399084",
+          "text": "This chunk from MCTD case report 41399084 describes POEMS misdiagnosed as sclerosis. This article reports the diagnosis and treatment process of a 52-year-old female patient who was finally diagnosed with POEMS syndrome. Her main clinical manifestations included Raynaud phenomenon of both hands, skin pigmentation, swelling of both hands and feet, and numbness of both feet. The patient was admitted to the Department of Rheumatology and Immunology, Peking University People's Hospital on April 8, 2024, due to \"purplish red skin on the neck and chest for 1.5 years, swelling of both hands for 1 year, and numbness of both feet for 8 months\"."
+        }
+      ],
+      "note": "lab cutoff absent"
+    },
+    {
+      "id": "B3",
+      "expect": "abstain",
+      "query": "Was cyclophosphamide first-line therapy for the lymphoma-mimic SLE case according to these chunks?",
+      "chunks": [
+        {
+          "chunk_id": "mctd_41996261_c1",
+          "disease": "MCTD",
+          "pubmed_id": "41996261",
+          "text": "This chunk from MCTD case report 41996261 describes Castleman-like nodes in MCTD. Differentiating reactive lymphadenopathies in the context of autoimmune disease from Idiopathic Multicentric Castleman Disease (iMCD) poses a significant diagnostic challenge. Castleman-like histological features have been described in various autoimmune disorders, necessitating a strict and comprehensive integration of clinical and laboratory findings to reach the correct diagnosis. Although the Castleman Disease Collaborative Network (CDCN) consensus guidelines list several autoimmune conditions as exclusion criteria for an iMCD diagnosis, mixed connective tissue disease (MCTD) is not currently among them."
+        }
+      ],
+      "note": "wrong disease chunk"
+    },
+    {
+      "id": "C1",
+      "expect": "join",
+      "query": "Compare the wrong initial disease labels across the SLE pleural/TB-mimic case and the MCTD POEMS case: what was each mistaken for or confused with?",
+      "chunks": [
+        {
+          "chunk_id": "sle_42367351_c1",
+          "disease": "SLE",
+          "pubmed_id": "42367351",
+          "text": "This chunk from SLE case report 42367351 describes TB mimic of pleural SLE. BACKGROUND: Systemic lupus erythematosus (SLE) is a multisystem autoimmune disease with diverse clinical manifestations that may mimic infectious conditions, particularly in tuberculosis-endemic regions. Pleural effusion and respiratory symptoms are often attributed to tuberculosis, leading to delayed recognition of autoimmune disease. Neuropsychiatric involvement represents a severe manifestation that may be under recognized in low-resource settings where access to specialized investigations is limited."
+        },
+        {
+          "chunk_id": "mctd_41399084_c1",
+          "disease": "MCTD",
+          "pubmed_id": "41399084",
+          "text": "This chunk from MCTD case report 41399084 describes POEMS misdiagnosed as sclerosis. This article reports the diagnosis and treatment process of a 52-year-old female patient who was finally diagnosed with POEMS syndrome. Her main clinical manifestations included Raynaud phenomenon of both hands, skin pigmentation, swelling of both hands and feet, and numbness of both feet. The patient was admitted to the Department of Rheumatology and Immunology, Peking University People's Hospital on April 8, 2024, due to \"purplish red skin on the neck and chest for 1.5 years, swelling of both hands for 1 year, and numbness of both feet for 8 months\"."
+        }
+      ],
+      "note": "cross-disease join SLE+MCTD"
+    },
+    {
+      "id": "C2",
+      "expect": "join",
+      "query": "Which two non-SLE entities in these chunks can present with features that lead clinicians toward an SLE label?",
+      "chunks": [
+        {
+          "chunk_id": "sle_42287064_c1",
+          "disease": "SLE",
+          "pubmed_id": "42287064",
+          "text": "This chunk from SLE case report 42287064 describes lymphoma mimicking SLE. Systemic lupus erythematosus (SLE) and lymphoma are two different diseases. However, they might mimic each other sometimes. Here, we reported a case of bone marrow infiltration as initial manifestation of large B-cell lymphoma that mimiced SLE."
+        },
+        {
+          "chunk_id": "sle_42182598_c1",
+          "disease": "SLE",
+          "pubmed_id": "42182598",
+          "text": "This chunk from SLE case report 42182598 describes HLH as first SLE presentation. Hemophagocytic lymphohistiocytosis secondary to systemic lupus erythematosus (SLE) is a potentially fatal condition that is frequently misdiagnosed, particularly when its occurrence is the first manifestation of SLE. Diagnosis is often delayed due to overlapping clinical and laboratory findings with infections and autoimmune diseases. We report a case of a young, healthy woman with hemophagocytic lymphohistiocytosis as the first manifestation of SLE."
+        }
+      ],
+      "note": "lymphoma + HLH paths \u2014 both SLE-related but distinct"
+    },
+    {
+      "id": "C3",
+      "expect": "join",
+      "query": "Across autoimmune case reports here, name two distinct diagnostic confusion partners mentioned (e.g., vasculitis, Castleman-like disease, sclerosis-spectrum, infection).",
+      "chunks": [
+        {
+          "chunk_id": "mctd_41996261_c1",
+          "disease": "MCTD",
+          "pubmed_id": "41996261",
+          "text": "This chunk from MCTD case report 41996261 describes Castleman-like nodes in MCTD. Differentiating reactive lymphadenopathies in the context of autoimmune disease from Idiopathic Multicentric Castleman Disease (iMCD) poses a significant diagnostic challenge. Castleman-like histological features have been described in various autoimmune disorders, necessitating a strict and comprehensive integration of clinical and laboratory findings to reach the correct diagnosis. Although the Castleman Disease Collaborative Network (CDCN) consensus guidelines list several autoimmune conditions as exclusion criteria for an iMCD diagnosis, mixed connective tissue disease (MCTD) is not currently among them."
+        },
+        {
+          "chunk_id": "sjogren's_37427846_c1",
+          "disease": "Sjogren's",
+          "pubmed_id": "37427846",
+          "text": "This chunk from Sjogren's case report 37427846 describes vasculitis masquerading as Sjogren. Anti-neutrophil cytoplasmic antibody (ANCA) -positive vasculitis is a small-vessel vasculitis that affects multiple body systems. Salivary gland involvement in ANCA-associated vasculitis is rare. When present, it mimics infection or malignancy, which might lead to misdiagnosis."
+        }
+      ],
+      "note": "multi-disease pattern"
+    }
+  ]
+}

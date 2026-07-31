@@ -15,8 +15,13 @@
       "Bash(find . *)",
       "Bash(ls*)",
       "Bash(wc -l *)",
-      "Bash(grep *)"
+      "Bash(grep *)",
+      "Bash(PYTHONPATH=. rtk pytest tests/test_extract_misdiagnosis.py -v)",
+      "Bash(PYTHONPATH=. python3 -c ' *)"
     ]
+  },
+  "skillOverrides": {
+    "superpowers:using-superpowers": "user-invocable-only"
   },
   "hooks": {
     "PreToolUse": [
@@ -67,8 +72,5 @@
   },
   "enabledPlugins": {
     "superpowers@superpowers-marketplace": true
-  },
-  "skillOverrides": {
-    "superpowers:using-superpowers": "user-invocable-only"
   }
 }

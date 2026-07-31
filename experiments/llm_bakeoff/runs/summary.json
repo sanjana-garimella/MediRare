@@ -1,0 +1,91 @@
+{
+  "diseases": [
+    "SLE",
+    "MCTD",
+    "Sjogren's"
+  ],
+  "protocol": "experiments/llm_bakeoff/eval_items.json",
+  "runtime": "Ollama OpenAI-compatible http://127.0.0.1:11434",
+  "results": [
+    {
+      "model": "qwen2.5:14b",
+      "role_tested": "generator",
+      "score_over_10": 10,
+      "total_elapsed_s": 6415.6,
+      "failures": [],
+      "note": "primary generator",
+      "run_path": "experiments/llm_bakeoff/runs/qwen2.5_14b.json"
+    },
+    {
+      "model": "llama3.1:8b",
+      "role_tested": "generator",
+      "score_over_10": 10,
+      "total_elapsed_s": 17.4,
+      "failures": [],
+      "note": "light generator",
+      "run_path": "experiments/llm_bakeoff/runs/llama3.1_8b.json"
+    },
+    {
+      "model": "qwen3:32b",
+      "role_tested": "generator",
+      "score_over_10": 10,
+      "total_elapsed_s": 70.7,
+      "failures": [],
+      "note": "generator w/ think:false",
+      "run_path": "experiments/llm_bakeoff/runs/qwen3_32b.json"
+    },
+    {
+      "model": "meditron:7b",
+      "role_tested": "medical",
+      "score_over_10": 7,
+      "total_elapsed_s": 63.3,
+      "failures": [
+        "B1",
+        "B2",
+        "B3"
+      ],
+      "note": "medical support",
+      "run_path": "experiments/llm_bakeoff/runs/meditron_7b.json"
+    }
+  ],
+  "locked": {
+    "policy": "1 primary + 1 backup (also used as the --verify consistency-check model)",
+    "primary": {
+      "model": "qwen2.5:14b",
+      "role": "final_cited_answerer",
+      "ollama": "qwen2.5:14b",
+      "think": false
+    },
+    "backup": {
+      "model": "llama3.1:8b",
+      "role": "light_fallback_and_verify_consistency_check",
+      "ollama": "llama3.1:8b",
+      "think": false,
+      "note": "also used as agent/ask.py --verify's cross-model consistency check (independent of primary); live-tested 11/11 correct grades on real answers"
+    },
+    "parked": [
+      {
+        "model": "meditron:7b",
+        "note": "7/10 on cite/abstain; fails abstain B1-B3. Originally slated as the --verify model; live-tested against Ollama and found to never return a parseable SUPPORT_FRACTION grade (echoes the prompt / hallucinates unrelated content, including on a trivial sanity prompt). Not used by any code path."
+      },
+      {
+        "model": "qwen3:32b",
+        "note": "10/10 with think:false; not in active set"
+      }
+    ],
+    "embeddings_rerank": {
+      "dense": "sentence-transformers/all-MiniLM-L6-v2",
+      "rerank": null,
+      "ranking": "dense + BM25 reciprocal-rank fusion",
+      "future_candidates": ["bge-m3", "bge-reranker-v2-m3"]
+    },
+    "do_not_use": [
+      "vLLM",
+      "third active generator",
+      "second medical model by default",
+      "qwen2.5-coder as agent",
+      "deepseek-coder as agent",
+      "meditron as final cited answerer"
+    ]
+  }
+}

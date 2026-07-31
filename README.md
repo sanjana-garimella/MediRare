@@ -1,6 +1,14 @@
 # MediRare
 
-Multimodal AI system for detecting misdiagnosis patterns in rare diseases, combining NLP on case reports, computer vision on clinical figures, and LLM-based reasoning over the extracted knowledge.
+Research prototype for extracting candidate diagnostic-confusion mentions from
+rare-disease case reports. It combines NLP, clinical-figure metadata, and
+citation-constrained retrieval.
+
+> **Research use only.** This is not medical advice or clinical decision
+> support. Current annotations are AI-proposed and not clinician-reviewed.
+> Case reports are publication-biased anecdotes; extracted counts do not
+> estimate prevalence, risk, causality, or diagnostic performance. Citations
+> establish source provenance, not clinical correctness.
 
 ---
 
@@ -14,7 +22,9 @@ MediRare addresses this across 12 rare diseases, selected by real PubMed misdiag
 
 ## Reproducing the analysis
 
-The repository is self-contained: all data behind the analysis is committed, not referenced externally.
+Committed processed/biomedical fixtures are self-contained. Derived RAG chunks,
+indexes, graph outputs, and merged records are intentionally ignored and rebuilt
+locally so stale generated artifacts are not mistaken for source evidence.
 
 ```bash
 git clone <repo> && cd MediRare
@@ -51,20 +61,22 @@ The active disease scope is 12 diseases, but fetching has only been done for 3 (
 
 | Disease | Query focus | Records | Misdiagnosis cases | Extracted |
 |---|---|---|---|---|
-| SLE | misdiagnosis | 100 | 63 (labeled) | 30 |
-| Sjogren's | general | 50 | not labeled | not run |
-| MCTD | general | 50 | not labeled | not run |
+| SLE | misdiagnosis | 100 | 63 (AI-proposed/internal labels) | 44 candidate sequence-bearing rows |
+| Sjogren's | misdiagnosis | 39 | keyword-derived/AI-proposed | 16 candidate sequence-bearing rows |
+| MCTD | misdiagnosis | 21 | keyword-derived/AI-proposed | 9 candidate sequence-bearing rows |
 
-SLE extractor evaluation (keyword/regex first pass vs. 100 hand labels, `nlp/eval_extractor.py`):
+`nlp/eval_extractor.py` reports document-level and entity-level exact/normalized
+set metrics. Current truth CSVs are AI-proposed or circular keyword-hit labels,
+not clinician-reviewed validation. `--llm-assist` remains opt-in: its unfiltered
+measured F1 was worse than regex-only, and filtered performance has not yet been
+established.
 
-| Metric | Value |
-|---|---|
-| Precision | 0.83 |
-| Recall | 0.40 |
-| F1 | 0.54 |
-| Accuracy | 0.57 (vs 0.63 majority baseline) |
+End-to-end for these 3 diseases: `bash scripts/e2e.sh`, then
+`python3 agent/ask.py --query "..."` or `streamlit run demo/app.py`. The agent
+defaults to clinician-reviewed evidence only and currently abstains because no
+record has completed adjudication. `--allow-unreviewed` exists solely for
+internal extraction debugging.
 
-Ground-truth labels in `data/biomedical/sle_misdiagnosis_groundtruth.csv` are AI-proposed (`review_status` column) and need clinician sign-off. The `SYN_*` rows in the gold set remain synthetic placeholders.
 
 ### CV: clinical figures
 
@@ -83,7 +95,7 @@ Figure type is assigned by caption keyword matching (imaging / histology / lab_c
 
 | Asset | Records | Status |
 |---|---|---|
-| Gold annotated cases | 10 | Synthetic placeholders (`SYN_001` to `SYN_010`), not expert-annotated |
+| Synthetic example cases | 10 | Placeholders (`SYN_001` to `SYN_010`), not evaluation or expert annotation |
 | HPO phenotype mappings | 31 | SLE (10), Sjogren's (10), MCTD (11) |
 | Label / annotation guide | N/A | Complete for all 3 fetched diseases |
 
@@ -101,8 +113,8 @@ NLP Pipeline  CV Pipeline
    │            │
    └─────┬──────┘
          │
-  Misdiagnosis Knowledge Graph
-  (NetworkX, disease confusion patterns)
+  Reviewed Relation Graph
+  (candidate edges quarantined until adjudication)
          │
   Vector Store (ChromaDB/LanceDB)
   + Hybrid Search (dense + BM25)
@@ -148,7 +160,7 @@ Inflammatory Myositis (autoimmune muscle inflammation causing progressive weakne
 | Computer Vision | PyMuPDF (extraction), ViT (classification) |
 | Vector DB / RAG | LanceDB (on-disk), ChromaDB, BM25 hybrid |
 | Knowledge Graph | NetworkX |
-| LLM Agent | vLLM + LangChain + MCP |
+| LLM Agent | Ollama: `qwen2.5:14b` (primary answerer) + `llama3.1:8b` (backup answerer; also the `--verify` cross-model consistency check, since it's independent of the primary). `meditron:7b` was tried for `--verify` and found non-functional — it never returned a parseable grade — so it is parked, not used by any code path. |
 | Demo | Streamlit |
 
 ---

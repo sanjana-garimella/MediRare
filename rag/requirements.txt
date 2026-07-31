@@ -1,0 +1,6 @@
+lancedb>=0.17
+bm25s>=0.2
+pyarrow
+numpy
+networkx
+sentence-transformers
