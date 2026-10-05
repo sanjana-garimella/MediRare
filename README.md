@@ -99,6 +99,28 @@ Figure type is assigned by caption keyword matching (imaging / histology / lab_c
 | HPO phenotype mappings | 31 | SLE (10), Sjogren's (10), MCTD (11) |
 | Label / annotation guide | N/A | Complete for all 3 fetched diseases |
 
+### Exploratory: autoantibody mentions
+
+Regex count of autoantibody / serology terms (ANA, anti-dsDNA, anti-Sm,
+anti-Ro/SSA, anti-La/SSB, anti-U1-RNP, antiphospholipid, ANCA/PR3/MPO, AQP4,
+AChR/MuSK, complement) in titles + abstracts. Exploratory signal check only,
+not an extraction feature.
+
+| Disease | Records | Any mention | Positive-result sentence | Among misdiagnosis records |
+|---|---|---|---|---|
+| SLE | 100 | 32 (32%) | 27 (27%) | 15 / 44 (34%) |
+| Sjogren's | 39 | 12 (31%) | 11 (28%) | 4 / 16 (25%) |
+| MCTD | 21 | 9 (43%) | 8 (38%) | 5 / 9 (56%) |
+
+Top markers match each disease (SLE: ANA, complement, anti-dsDNA; Sjogren's:
+anti-Ro/SSA, anti-La/SSB; MCTD: anti-U1-RNP). Spot checks show some cases
+where serology resolves the misdiagnosis (e.g. SLE initially treated as
+tuberculosis, confirmed by ANA/anti-dsDNA/anti-Ro), but counts include
+background definitions and negative panels, so true resolving-test cases are
+lower. Abstracts likely undercount versus full text. Enzyme/protein targets
+(PR3, MPO, AQP4, AChR) become relevant only once GPA, NMO, and myasthenia
+gravis are fetched.
+
 ---
 
 ## Architecture
