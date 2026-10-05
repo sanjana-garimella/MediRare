@@ -10,6 +10,25 @@ citation-constrained retrieval.
 > estimate prevalence, risk, causality, or diagnostic performance. Citations
 > establish source provenance, not clinical correctness.
 
+## Quick start
+
+Processed case reports are committed, so no PubMed fetch is needed.
+
+```bash
+git clone https://github.com/sanjana-garimella/MediRare.git && cd MediRare
+pip install -r rag/requirements.txt -r cv/requirements.txt -r demo/requirements.txt
+bash scripts/e2e.sh                # rebuild chunks, index, graph (gitignored outputs)
+ollama pull qwen2.5:14b            # ~9 GB; needed only for the Ask tab
+streamlit run demo/app.py          # http://localhost:8501
+```
+
+- Tick **"Enable unreviewed research outputs"** in the demo. No record has
+  clinician review yet, so with it off the Ask tab abstains and the reviewed
+  graph is empty.
+- The Ask tab needs [Ollama](https://ollama.com) running (`ollama serve`) and
+  roughly 16 GB RAM for `qwen2.5:14b`. The graph and data tabs work without it.
+- `nlp/requirements.txt` (paperscraper) is only needed to fetch new PubMed data.
+
 ---
 
 ## Problem
@@ -104,7 +123,8 @@ Figure type is assigned by caption keyword matching (imaging / histology / lab_c
 Regex count of autoantibody / serology terms (ANA, anti-dsDNA, anti-Sm,
 anti-Ro/SSA, anti-La/SSB, anti-U1-RNP, antiphospholipid, ANCA/PR3/MPO, AQP4,
 AChR/MuSK, complement) in titles + abstracts. Exploratory signal check only,
-not an extraction feature.
+not an extraction feature. Reproduce with
+`python3 scripts/count_autoantibodies.py`.
 
 | Disease | Records | Any mention | Positive-result sentence | Among misdiagnosis records |
 |---|---|---|---|---|
