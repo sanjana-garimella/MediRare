@@ -55,7 +55,7 @@ Query focus matters more than corpus size. The generic `--focus general` query b
 
 ## Current data
 
-The active disease scope is 12 diseases, but fetching has only been done for 3 (SLE, Sjogren's, MCTD). The remaining 9 have `DISEASE_TERMS` entries but no fetched data yet.
+The active disease scope is 12 diseases, but fetching has only been done for 3 (SLE, Sjogren's, MCTD). The remaining 9 are not yet configured: no `DISEASE_TERMS` / `MISDIAGNOSIS_TERMS` entries, HPO rows, or label guide sections.
 
 ### NLP: case reports
 
